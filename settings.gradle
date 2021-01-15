@@ -1,0 +1,4 @@
+include ':LoudAPI'
+include ':Cronometer'
+include ':app'
+rootProject.name = "Loud"
