@@ -20,7 +20,7 @@ Cronometer *Cronometer::getInstance() {
 }
 
 void Cronometer::startClock(Cronometer *cronom) {
-    uswtime(&cronom->utime0,&cronom->stime0, &cronom->wtime0);
+    uswtime(&cronom->utime0, &cronom->stime0, &cronom->wtime0);
 }
 
 double Cronometer::stopClock(Cronometer *cronom) {
@@ -41,7 +41,6 @@ double Cronometer::wallTime(Cronometer *cronom) {
 }
 
 void Cronometer::uswtime(double *usertime, double *systime, double *walltime) {
-//double mega = 1.0e-6;
     struct rusage buffer;
     struct timeval tp;
     struct timezone tzp;
