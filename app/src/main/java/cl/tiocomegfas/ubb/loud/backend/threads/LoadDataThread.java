@@ -63,5 +63,5 @@ public class LoadDataThread implements Runnable{
             this.thread.interrupt();
         }
     }
-    
+
 }

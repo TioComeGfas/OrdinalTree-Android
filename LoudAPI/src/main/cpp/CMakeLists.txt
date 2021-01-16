@@ -26,6 +26,9 @@ add_library( # Sets the name of the library.
             loud/NodeTree.h
             loud/OrdinalTree.cpp
             loud/OrdinalTree.h
+
+            util/RankSelect.cpp
+            util/RankSelect.h
         )
 
 # Searches for a specified prebuilt library and stores the path as a

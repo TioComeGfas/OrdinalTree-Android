@@ -6,7 +6,7 @@
 #define LOUD_NODETREE_H
 
 class NodeTree {
-
+    int bitarray;
 };
 
 

@@ -1,9 +1,11 @@
-package cl.tiocomegfas.ubb.loud;
+package cl.tiocomegfas.ubb.loud.frontend.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+
+import cl.tiocomegfas.ubb.loud.R;
 
 public class MainActivity extends AppCompatActivity {
 

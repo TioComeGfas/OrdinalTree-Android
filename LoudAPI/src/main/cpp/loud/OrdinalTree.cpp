@@ -3,3 +3,7 @@
 //
 
 #include "OrdinalTree.h"
+
+OrdinalTree::OrdinalTree() {
+
+}

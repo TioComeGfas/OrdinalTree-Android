@@ -6,9 +6,11 @@
 #define LOUD_ORDINALTREE_H
 
 
+#include "NodeTree.h"
+
 class OrdinalTree {
 private:
-
+    NodeTree* root;
 
 public:
     OrdinalTree();
