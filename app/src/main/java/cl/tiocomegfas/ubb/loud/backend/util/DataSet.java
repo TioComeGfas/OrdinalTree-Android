@@ -15,6 +15,7 @@ import java.util.Random;
 
 import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.constants.Sex;
+import cl.tiocomegfas.ubb.loud.backend.exceptions.LoudMasterException;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 
 public class DataSet {
@@ -92,7 +93,7 @@ public class DataSet {
         return INSTANCE;
     }
 
-    public LinkedList<Person> load(Context context, int size){
+    public LinkedList<Person> load(Context context, int size) throws LoudMasterException {
         //carga de los nombre de hombres
         String json = readNameMale(context);
         LinkedList<String> nameMales = loadJson(json);
