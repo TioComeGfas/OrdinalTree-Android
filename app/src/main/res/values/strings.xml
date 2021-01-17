@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Loud</string>
+    <string name="title_cv_top_fragment_home">Level Order Unary Degree Sequence</string>
+    <string name="title_cv_acciones_fragment_home">Cargar datos de prueba</string>
 </resources>

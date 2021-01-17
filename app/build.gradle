@@ -14,11 +14,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
     }
 
     buildTypes {
@@ -41,10 +36,18 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':LoudAPI')
     implementation project(path: ':Cronometer')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //LIBRERIA PARA PRESENTAR ARBOLES DE MANERA GRAFICA
     implementation 'de.blox:graphview:0.7.1'
+
+    //BOTTON NAVIGATION
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.2.0'
+
+    //BUTTERKNIFE
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 }
