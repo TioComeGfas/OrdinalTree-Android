@@ -5,7 +5,6 @@
 #ifndef LOUD_ORDINALTREE_H
 #define LOUD_ORDINALTREE_H
 
-#include "NodeTree.h"
 #include "../util/RankSelect.h"
 #include <stdlib.h>
 

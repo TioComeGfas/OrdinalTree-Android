@@ -2,129 +2,367 @@
 // Created by Fredy Camilo Moncada Contreras on 1/16/21.
 //
 
+#include <bitset>
 #include "RankSelect.h"
 
-RankSelect::RankSelect(long *vector, int k) {
-    this->k = k;
-    this->n = (sizeof(vector) / sizeof(long)) * 64;
-    this->s = k * 32;
-
-    this->popc = buildPopc();
-    this->bitvector = buildBitVector(n,vector);
-    this->Rs = buildRs(n,s);
+RankSelect::RankSelect(BitArray *bitArray){
+    this(bitArray,20);
 }
 
-void RankSelect::reBuild(long *vector, int k) {
-    this->k = k;
-    this->n = (sizeof(vector) / sizeof(long)) * 64;
-    this->s = k * 32;
-
-    this->bitvector = buildBitVector(n,vector);
-    this->Rs = buildRs(n,s);
-}
-
-int RankSelect::rank(int i) {
-    if(i == 0) return 0;
-    if(i < 0 || i > n) return -1;
-    return rankSuperBlock(i) + rankBlock(i) + rankInt(i);
-}
-
-int RankSelect::select(int i) {
-    if(i < 1 || i > n || this->Rs[(sizeof(Rs) / sizeof(int)) -1] < i) return -1;
-    int l = 1;
-    int h = n;
-
-    int idx = -1;
-
-    while(l <= h){
-        int m = (h-1) / 2 + l;
-        if(rank(m) > i){
-            h = m - 1;
-        }else if(rank(m) == i){
-            idx = m;
-            h = m - 1;
-        }else{
-            l = m - 1;
-        }
+RankSelect::RankSelect(BitArray *bitArray, int factor) {
+    this->length = sizeof(bitArray) / sizeof(*bitArray);
+    bits = bitArray->cloneBits();
+    this->factor = factor;
+    if(factor == 0){
+        factor=20;
     }
-    return idx;
+    s = WORD_SIZE * factor;
+    buildRank();
+    ones = rank1(length-1);
 }
 
-int RankSelect::rankSuperBlock(int i) {
-    int idx = i / s;
-    return idx == 0 ? 0 : Rs[idx - 1];
+long RankSelect::numberOfOnes() {
+    return this->ones;
 }
 
-int RankSelect::rankBlock(int i) {
-    int start = (i /s) * k;
-    int idx = i / 32;
-    int sum = 0;
-    if(idx == 0) return 0;
-    for(int j = start; j < idx; j++){
-        sum += popCount(bitvector[j]);
-    }
-    return sum;
+bool RankSelect::access(long pos) {
+    if(pos < 0); //throw new IndexOutOfBoundsException("pos < 0: " + pos);
+    if(pos >= length); //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    return (this->bits[(int)(pos / WORD_SIZE)] & (1l << (pos % WORD_SIZE))) != 0;
 }
 
-int RankSelect::rankInt(int i) {
-    int idx = i / 32;
-    int x = i - (idx * 32);
-    int shift = 32 - x;
-    //return idx == (sizeof(bitvector) / sizeof(int)) || x == 0 ? 0 : popCount(bitvector[idx] >>> shift);
-    return idx == (sizeof(bitvector) / sizeof(int)) || x == 0 ? 0 : popCount(bitvector[idx] >> shift);
-}
-
-int *RankSelect::buildBitVector(int n, long *vector) {
-    int size = n/32;
-    int* arr = new int[size];
-    int previous = -1;
-    for(int i = 0; i < size ; i++){
-        int j = i >> 1;
-        if(j != previous){
-            //arr[i] = (int)(vector[j] >>> 32);
-            arr[i] = (int)(vector[j] >> 32);
-        }else{
-            arr[i] = (int)(vector[j]);
-        }
-        previous = j;
+long RankSelect::rank1(long pos) {
+    if(pos < 0); //throw new IndexOutOfBoundsException("pos < 0: " + pos);
+    if(pos >= length); //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    long i = pos + 1;
+    int p = (int)(i/s);
+    long resp = Rs[p];
+    int aux = p * factor;
+    for (int a = aux; a < (i / WORD_SIZE) ; a++){
+        resp += countBits(bits[a]);
     }
 
-    return arr;
+    resp +=  countBits(bits[(int)(i/WORD_SIZE)] & ((1l<<(i & mask63))-1l));
+    return resp;
 }
 
-int *RankSelect::buildRs(int n, int s) {
-    int sizeBitVector = (sizeof(bitvector) / sizeof(int));
-    int sizeArr = (n/s) + 1;
-    int* arr = new int[sizeArr];
-
-    for(int i = 0; i < sizeBitVector; i++){
-        int j = (i * 32) / s;
-        arr[j] += popCount(bitvector[i]);
+long RankSelect::select1(long i) {
+    long x=i;
+    // returns i such that x=rank(i) && rank(i-1)<x or n if that i not exist
+    // first binary search over first level rank structure
+    // then sequential search using popcount over a int
+    // then sequential search using popcount over a char
+    // then sequential search bit a bit
+    if(i <= 0); //throw new IndexOutOfBoundsException("i <= 0: " + i);
+    if(i > ones); //throw new IndexOutOfBoundsException("i > amount of ones:"+ i);
+    //binary search over first level rank structure
+    int l = 0;
+    int r = (int)(length/s);
+    int mid = (l + r) / 2;
+    long rankmid = Rs[mid];
+    while (l <= r) {
+        if (rankmid < x)
+            l = mid + 1;
+        else
+            r = mid - 1;
+        mid = (l + r) / 2;
+        rankmid = Rs[mid];
     }
-
-    for(int j = sizeArr - 1; j >= 0; j--){
-        for(int l = j - 1; l >= 0; l--){
-            arr[j] += arr[l];
-        }
+    //sequential search using popcount over a int
+    int left;
+    left = mid * factor;
+    x -= rankmid;
+    long j = bits[left];
+    int onesJ = countBits(j);
+    while (onesJ < x) {
+        x -= onesJ;
+        left++;
+        if (left > bits.length) return length;
+        j = bits[left];
+        onesJ = countBits(j);
     }
-    return arr;
-}
-
-int8_t *RankSelect::buildPopc() {
-    int sizeArr = 256;
-    auto* arr = new int8_t[sizeArr];
-
-    for(int i = 0; i < sizeArr; i++){
-        for(int8_t j = 0; j < 9; j++){
-            //arr[i] += (int8_t)((i >>> j) & 1);
-            arr[i] += (int8_t)((i >> j) & 1);
+    //sequential search using popcount over a char
+    left = left * WORD_SIZE;
+    rankmid = countBits(j);
+    if (rankmid < x) {
+        j = j >> 8l; //j=j>>>8l;
+        x -= rankmid;
+        left += 8l;
+        rankmid = countBits(j);
+        if (rankmid < x) {
+            j = j >> 8l; //j=j>>>8l;
+            x-=rankmid;
+            left+=8l;
+            rankmid = countBits(j);
+            if (rankmid < x) {
+                j = j >> 8l; //j=j>>>8l;
+                x -= rankmid;
+                left += 8l;
+            }
         }
     }
 
-    return arr;
+    // then sequential search bit a bit
+    while (x > 0) {
+        if((j & 1) > 0) x--;
+        j = j << 1l;  //j=j>>>1l;
+        left++;
+    }
+    return left - 1;
 }
 
-int RankSelect::popCount(int x) {
-    //return popc[x & 0xFF] + popc[(x >>> 8) & 0xFF] + popc[(x >>> 16) & 0xFF] + popc[(x >>> 24)];
-    popc[x & 0xFF] + popc[(x >> 8) & 0xFF] + popc[(x >> 16) & 0xFF] + popc[(x >> 24)];
+int RankSelect::countBits(long value) {
+    int count = 0;
+    while (value) {
+        count += value & 0x1u;
+        value >>= 1;
+    }
+    return count;
 }
+
+int RankSelect::lenghArray() {
+    return 0;
+}
+
+long RankSelect::rank0(long pos) {
+    return pos - rank1(pos) + 1;
+}
+
+long RankSelect::select0(long i) {
+    long x = i;
+    // returns i such that x=rank_0(i) && rank_0(i-1)<x or exception if that i not exist
+    // first binary search over first level rank structure
+    // then sequential search using popcount over a int
+    // then sequential search using popcount over a char
+    // then sequential search bit a bit
+    if(i <= 0); //throw new IndexOutOfBoundsException("i < 1: " + i);
+    if(i > length - ones); //throw new IndexOutOfBoundsException("i > amount of 0:"+ i);
+    //binary search over first level rank structure
+    if(x == 0) return 0;
+    int l = 0;
+    int r = (int)(length/s);
+    int mid = (l + r) / 2;
+    long rankmid = mid * factor * WORD_SIZE - Rs[mid];
+    while (l <= r) {
+        if (rankmid < x)
+            l = mid + 1;
+        else
+            r = mid - 1;
+        mid = (l + r) / 2;
+        rankmid = mid * factor * WORD_SIZE - Rs[mid];
+    }
+    //sequential search using popcount over a int
+    int left;
+    left = mid * factor;
+    x -= rankmid;
+    long j = bits[left];
+    int zeros = WORD_SIZE - countBits(j); //Long.bitCount(j);
+    while (zeros < x) {
+        x -= zeros;
+        left++;
+        if (left > bits.length) return length;
+        j = bits[left];
+        zeros = WORD_SIZE - countBits(j); //Long.bitCount(j);
+    }
+    //sequential search using popcount over a char
+    left = left * WORD_SIZE;
+    rankmid = WORD_SIZE - countBits(j); //Long.bitCount(j);
+    if (rankmid < x) {
+        j = j >> 8l;
+        x -= rankmid;
+        left += 8;
+        rankmid = WORD_SIZE - countBits(j); //Long.bitCount(j);
+        if (rankmid < x) {
+            j = j >> 8l;
+            x -= rankmid;
+            left += 8;
+            rankmid = WORD_SIZE - countBits(j); //Long.bitCount(j);
+            if (rankmid < x) {
+                j = j >> 8l;
+                x -= rankmid;
+                left += 8;
+            }
+        }
+    }
+
+    // then sequential search bit a bit
+    while (x>0) {
+        if  (j%2 == 0 ) x--;
+        j=j>>1l;
+        left++;
+    }
+    left--;
+    if (left > length)  return length;
+    return left;
+}
+
+long RankSelect::selectNext1(long start) {
+    if(start<0); //throw new IndexOutOfBoundsException("start < 0: " + start);
+    if(start>=length); //throw new IndexOutOfBoundsException("start >= length:"+ start);
+    long count = start;
+    long des;
+    long aux2;
+    des = (int)(count % WORD_SIZE);
+    aux2= bits[(int)(count / WORD_SIZE)] >>> des;
+    if (aux2 != 0) {
+        return count + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
+    }
+
+    for (int i =(int)(count/WORD_SIZE)+1 ; i < bits.length;i++) {
+        aux2 = bits[i];
+        if (aux2 != 0) {
+            return i * WORD_SIZE + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
+        }
+    }
+    return length;
+}
+
+long RankSelect::selectPrev1(long start) {
+    // returns the position of the previous 1 bit before and including start.
+    if(start < 0); //throw new IndexOutOfBoundsException("start < 0: " + start);
+    if(start >= length); //throw new IndexOutOfBoundsException("start > length:"+ start);
+    if(start == 0)return -1;
+    int i = (int)(start / WORD_SIZE);
+    int offset = (int)(start % WORD_SIZE);
+    //64 unos
+    long mask = 0xffffffffffffffffL;
+    long aux2 = bits[i] & (mask >>> (WORD_SIZE-offset));
+
+    if (aux2 != 0) {
+        return i*WORD_SIZE+63 - leadingZeros(aux2);  //Long.numberOfLeadingZeros(aux2);
+    }
+
+    for (int k = i - 1; k >= 0; k--) {
+        aux2 = bits[k];
+        if (aux2 != 0) {
+            return k * WORD_SIZE + 63 - leadingZeros(aux2); //Long.numberOfLeadingZeros(aux2);
+        }
+    }
+    return -1;
+}
+
+int RankSelect::leadingZeros(long x) {
+    int total_bits = sizeof(x) * 8;
+    int res = 0;
+    while ( !(x & (1 << (total_bits - 1)))){
+        x = (x << 1);
+        res++;
+    }
+
+    return res;
+}
+
+int RankSelect::trailZeros(long value) {
+    int count = 0;
+    int twos = 0;
+    int fives = 0;
+    while(value % 2 == 0 || value % 5 == 0){
+        if(value % 2 == 0){
+            value = value/2;
+            twos++;
+        }
+        if(value % 5 == 0){
+            value = value / 5;
+            fives++;
+        }
+    }
+    count = twos < fives ? twos : fives;
+    return count;
+}
+
+long RankSelect::selectNext0(long start) {
+    if(start < 0); //throw new IndexOutOfBoundsException("start < 0: " + start);
+    if(start >= length); //throw new IndexOutOfBoundsException("start >= length:"+ start);
+    long count = start;
+    long des;
+    long aux2;
+    des = (int)(count % WORD_SIZE);
+    aux2 = ~bits[(int)(count/WORD_SIZE)] >>> des;
+    if (aux2 != 0) {
+        return count + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
+    }
+
+    for (int i = (int)(count/WORD_SIZE)+1; i < bits.length;i++) {
+        aux2 = ~bits[i];
+        if (aux2 != 0) {
+            return i*WORD_SIZE + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
+        }
+    }
+    return length;
+}
+
+long RankSelect::selectPrev0(long start) {
+    // returns the position of the previous 1 bit before and including start.
+    if(start < 0); //throw new IndexOutOfBoundsException("start < 0: " + start);
+    if(start >= length); //throw new IndexOutOfBoundsException("start > length:"+ start);
+    if(start == 0) return -1;
+    int i = (int)(start / WORD_SIZE);
+    long offset = (start % WORD_SIZE);
+    //64 unos
+    long mask = 0xffffffffffffffffL;
+    long aux2 = ~bits[i] & (mask >>> (WORD_SIZE-offset));
+
+    if (aux2 != 0) {
+        return i * WORD_SIZE + 63 - leadingZeros(aux2); //Long.numberOfLeadingZeros(aux2);
+    }
+    for (int k = i - 1; k >= 0 ;k--) {
+        aux2 = ~bits[k];
+        if (aux2 != 0) {
+            return k * WORD_SIZE + 63 - leadingZeros(aux2); //Long.numberOfLeadingZeros(aux2);
+        }
+    }
+    return -1;
+}
+
+long RankSelect::getLength() {
+    return this->length;
+}
+
+long RankSelect::size() {
+    long bitmapSize = (bits.length*WORD_SIZE)/8+4;
+    long sbSize = Rs.length * WORD_SIZE / 8+4;
+    //variables:long: length, ones =2*8
+    //int: factor y s =2*4
+    //referencias a los arreglos (puntero): Rs, bits= 2*8 (word ram 64 bits)
+    long otros=8+8+4+4+8+8;
+    return bitmapSize+sbSize+otros;
+}
+
+char *RankSelect::toString() {
+    char* out = "";
+    for (int i = 0; i < length; i++) {
+        out[i] = access(i) ? '1' : '0';
+    }
+    return out;
+}
+
+long RankSelect::numberOfZeroes() {
+    return length - ones;
+}
+
+void RankSelect::buildRank() {
+    int num_sblock = (int)(length/s);
+    // +1 pues sumo la pos cero
+    Rs = new long[num_sblock+5];
+    int j;
+    Rs[0]=0;
+    for (j=1;j<=num_sblock;j++) {
+        Rs[j]=Rs[j-1];
+        Rs[j]+=BuildRankSub((j-1)*factor,factor);
+    }
+}
+
+long RankSelect::BuildRankSub(int ini, int bloques) {
+    long rank = 0;
+    long aux;
+    for(int i = ini; i < ini + bloques; i++) {
+        if (i < bits.length) {
+            aux=bits[i];
+            rank += countBits(aux); //Long.bitCount(aux);
+        }
+    }
+    return rank; //retorna el numero de 1's del intervalo
+}
+
+
+
