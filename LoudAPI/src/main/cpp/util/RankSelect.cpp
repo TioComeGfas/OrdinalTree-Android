@@ -6,7 +6,7 @@
 #include "RankSelect.h"
 
 RankSelect::RankSelect(BitArray *bitArray){
-    this(bitArray,20);
+    //this(bitArray,20);
 }
 
 RankSelect::RankSelect(BitArray *bitArray, int factor) {
@@ -77,7 +77,7 @@ long RankSelect::select1(long i) {
     while (onesJ < x) {
         x -= onesJ;
         left++;
-        if (left > bits.length) return length;
+        //if (left > bits.length) return length;
         j = bits[left];
         onesJ = countBits(j);
     }
@@ -160,7 +160,7 @@ long RankSelect::select0(long i) {
     while (zeros < x) {
         x -= zeros;
         left++;
-        if (left > bits.length) return length;
+        //if (left > bits.length) return length;
         j = bits[left];
         zeros = WORD_SIZE - countBits(j); //Long.bitCount(j);
     }
@@ -203,17 +203,19 @@ long RankSelect::selectNext1(long start) {
     long des;
     long aux2;
     des = (int)(count % WORD_SIZE);
-    aux2= bits[(int)(count / WORD_SIZE)] >>> des;
+    //aux2= bits[(int)(count / WORD_SIZE)] >>> des;
     if (aux2 != 0) {
         return count + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
     }
 
+    /*
     for (int i =(int)(count/WORD_SIZE)+1 ; i < bits.length;i++) {
         aux2 = bits[i];
         if (aux2 != 0) {
             return i * WORD_SIZE + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
         }
     }
+     */
     return length;
 }
 
@@ -226,7 +228,8 @@ long RankSelect::selectPrev1(long start) {
     int offset = (int)(start % WORD_SIZE);
     //64 unos
     long mask = 0xffffffffffffffffL;
-    long aux2 = bits[i] & (mask >>> (WORD_SIZE-offset));
+    //long aux2 = bits[i] & (mask >>> (WORD_SIZE-offset));
+    long aux2 = bits[i] & (mask >> (WORD_SIZE-offset));
 
     if (aux2 != 0) {
         return i*WORD_SIZE+63 - leadingZeros(aux2);  //Long.numberOfLeadingZeros(aux2);
@@ -277,17 +280,20 @@ long RankSelect::selectNext0(long start) {
     long des;
     long aux2;
     des = (int)(count % WORD_SIZE);
-    aux2 = ~bits[(int)(count/WORD_SIZE)] >>> des;
+    aux2 = ~bits[(int)(count/WORD_SIZE)] >> des; //aux2 = ~bits[(int)(count/WORD_SIZE)] >>> des;
     if (aux2 != 0) {
         return count + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
     }
 
+    /*
     for (int i = (int)(count/WORD_SIZE)+1; i < bits.length;i++) {
         aux2 = ~bits[i];
         if (aux2 != 0) {
             return i*WORD_SIZE + trailZeros(aux2); //Long.numberOfTrailingZeros(aux2);
         }
     }
+     */
+
     return length;
 }
 
@@ -300,7 +306,7 @@ long RankSelect::selectPrev0(long start) {
     long offset = (start % WORD_SIZE);
     //64 unos
     long mask = 0xffffffffffffffffL;
-    long aux2 = ~bits[i] & (mask >>> (WORD_SIZE-offset));
+    long aux2 = ~bits[i] & (mask >> (WORD_SIZE-offset)); //long aux2 = ~bits[i] & (mask >>> (WORD_SIZE-offset));
 
     if (aux2 != 0) {
         return i * WORD_SIZE + 63 - leadingZeros(aux2); //Long.numberOfLeadingZeros(aux2);
@@ -319,13 +325,13 @@ long RankSelect::getLength() {
 }
 
 long RankSelect::size() {
-    long bitmapSize = (bits.length*WORD_SIZE)/8+4;
-    long sbSize = Rs.length * WORD_SIZE / 8+4;
+    //long bitmapSize = (bits.length*WORD_SIZE)/8+4;
+    //long sbSize = Rs.length * WORD_SIZE / 8+4;
     //variables:long: length, ones =2*8
     //int: factor y s =2*4
     //referencias a los arreglos (puntero): Rs, bits= 2*8 (word ram 64 bits)
     long otros=8+8+4+4+8+8;
-    return bitmapSize+sbSize+otros;
+    return 0; //return bitmapSize+sbSize+otros;
 }
 
 char *RankSelect::toString() {
@@ -356,10 +362,13 @@ long RankSelect::BuildRankSub(int ini, int bloques) {
     long rank = 0;
     long aux;
     for(int i = ini; i < ini + bloques; i++) {
+
+        /*
         if (i < bits.length) {
             aux = bits[i];
             rank += countBits(aux); //Long.bitCount(aux);
         }
+         */
     }
     return rank; //retorna el numero de 1's del intervalo
 }

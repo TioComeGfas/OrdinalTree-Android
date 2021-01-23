@@ -112,7 +112,7 @@ public class TableAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, 
 
         // Get the holder to update cell item text
         MyColumnHeaderViewHolder columnHeaderViewHolder = (MyColumnHeaderViewHolder) holder;
-        columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
+        //columnHeaderViewHolder.column_header_textview.setText(columnHeader.getData());
 
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can ignore them.
@@ -120,7 +120,7 @@ public class TableAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, 
         // It is necessary to remeasure itself.
         columnHeaderViewHolder.column_header_container.getLayoutParams().width = LinearLayout
                 .LayoutParams.WRAP_CONTENT;
-        columnHeaderViewHolder.column_header_textview.requestLayout();
+        //columnHeaderViewHolder.column_header_textview.requestLayout();
     }
 
     /**
@@ -163,7 +163,7 @@ public class TableAdapter extends AbstractTableAdapter<ColumnHeader, RowHeader, 
     public void onBindRowHeaderViewHolder(@NonNull AbstractViewHolder holder, @Nullable RowHeader rowHeaderItemModel, int rowPosition) {
         // Get the holder to update row header item text
         MyRowHeaderViewHolder rowHeaderViewHolder = (MyRowHeaderViewHolder) holder;
-        rowHeaderViewHolder.row_header_textview.setText(((RowHeader) rowHeaderItemModel).getData());
+        //rowHeaderViewHolder.row_header_textview.setText(((RowHeader) rowHeaderItemModel).getData());
     }
 
     @NonNull

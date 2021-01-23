@@ -22,8 +22,6 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              loud-lib.cpp
-            loud/NodeTree.cpp
-            loud/NodeTree.h
             loud/OrdinalTree.cpp
             loud/OrdinalTree.h
 
