@@ -357,7 +357,7 @@ long RankSelect::BuildRankSub(int ini, int bloques) {
     long aux;
     for(int i = ini; i < ini + bloques; i++) {
         if (i < bits.length) {
-            aux=bits[i];
+            aux = bits[i];
             rank += countBits(aux); //Long.bitCount(aux);
         }
     }

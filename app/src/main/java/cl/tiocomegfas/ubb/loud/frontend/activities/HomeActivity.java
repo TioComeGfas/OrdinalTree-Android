@@ -34,11 +34,11 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.contenedor)
     FrameLayout frameLayout;
 
-    private final int POS_HOME = 0;
-    private final int POS_ORGANIGRAMA = 1;
-    private final int POS_EXPERIMENTO = 2;
-    private final int POS_IMPLEMENTACION = 3;
-    private final int POS_ACERCA_DE = 4;
+    private static final int POS_HOME = 0;
+    private static final int POS_ORGANIGRAMA = 1;
+    private static final int POS_EXPERIMENTO = 2;
+    private static final int POS_IMPLEMENTACION = 3;
+    private static final int POS_ACERCA_DE = 4;
 
     private final BottomNavigationBar.OnTabSelectedListener listenerBottomNavigationBar = new BottomNavigationBar.OnTabSelectedListener() {
         @Override

@@ -2,6 +2,18 @@
     <string name="app_name">Loud</string>
     <string name="title_cv_top_fragment_home">Organigrama de la empresa Coca Cola</string>
     <string name="title_cv_informacion_fragment_home">Resultados generales</string>
+
+    <string name="title_cv_implement_fragment">Seleccione un archivo a visualizar</string>
+
+    <string name="rb_bitarray_h">BitArray.h</string>
+    <string name="rb_bitarray_cpp">BitArray.cpp</string>
+
+    <string name="code_c_ordinal_tree_h">THIS CODE C</string>
+    <string name="code_c_ordinal_tree_cpp">THIS CODE C</string>
+    <string name="code_c_bitarray_h">THIS CODE C</string>
+    <string name="code_c_bitarray_cpp">THIS CODE C</string>
+    <string name="code_c_rankselect_h">THIS CODE C</string>
+    <string name="code_c_rankselect_cpp">THIS CODE C</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
