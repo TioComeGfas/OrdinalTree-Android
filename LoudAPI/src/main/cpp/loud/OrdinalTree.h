@@ -6,15 +6,11 @@
 #define LOUD_ORDINALTREE_H
 
 #include "../util/RankSelect.h"
+#include "../util/BitArray.h"
 #include <stdlib.h>
 
 class OrdinalTree{
 private:
-    typedef struct Node{
-        char* name_lastName;
-        double bitvector;
-    } OrdinalNode;
-
     RankSelect* rankSelect;
     int levels;
 public:
@@ -26,11 +22,11 @@ public:
      * @return
      */
     bool build(int countNodes);
-    //ordinalNode firstChild(int x);
-    //ordinalNode nextSibling(int x);
-    //ordinalNode parent(int x);
-    //ordinalNode child(int x, int i);
-    int dephth(int x);
+    //Node* firstChildNode(int x);
+    //Node* nextSiblingNode(int x);
+    //Node* parentNode(int x);
+    //Node* childNode(int x);
+    int depth(int x);
 
 private:
     int getRandom(int min, int max);

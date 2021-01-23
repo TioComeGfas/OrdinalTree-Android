@@ -17,7 +17,6 @@
 
 #include <cstdint>
 #include "BitArray.h"
-#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -31,7 +30,7 @@ private:
     int s;
     long ones;
     const long* bits;
-    long* Rs;//arreglo de superBlock
+    long* Rs; //arreglo de superBlock
 
 public:
     /**

@@ -3,6 +3,7 @@
 //
 
 #include "BitArray.h"
+#include "../exceptions/IndexOutOfBoundsException.h"
 
 BitArray::BitArray(long size) {
     this->length = size;
@@ -11,15 +12,15 @@ BitArray::BitArray(long size) {
 }
 
 bool BitArray::getBit(int pos) {
-    if(pos < 0) //throw new IndexOutOfBoundsException("pos < 0: " + pos);
-    if(pos >= length) //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
+    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
     return (bits[pos / WORD_SIZE] & (1l << (pos % WORD_SIZE))) != 0;
 }
 
 void BitArray::setBit(int pos) {
-    if(pos < 0); //throw new IndexOutOfBoundsException("pos < 0: " + pos);
-    if(pos > length); //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
+    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
     long block = bits[pos / WORD_SIZE];
     long mask = (long) (1l << (pos % WORD_SIZE));
@@ -28,8 +29,8 @@ void BitArray::setBit(int pos) {
 }
 
 void BitArray::setBit(int pos, bool b) {
-    if(pos < 0); //throw new IndexOutOfBoundsException("pos < 0: " + pos);
-    if(pos > length); //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
+    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
     long block = bits[pos / WORD_SIZE];
     long mask = (long) (1l << (pos % WORD_SIZE));
@@ -42,8 +43,8 @@ void BitArray::setBit(int pos, bool b) {
 }
 
 void BitArray::clearBit(int pos) {
-    if(pos < 0); //throw new IndexOutOfBoundsException("pos < 0: " + pos);
-    if(pos > length); //throw new IndexOutOfBoundsException("pos >= length():"+ pos);
+    if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
+    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
     long block = bits[pos / WORD_SIZE];
     long mask = (long) (1l << (pos % WORD_SIZE));
@@ -72,7 +73,7 @@ char *BitArray::toString() {
 }
 
 long *BitArray::cloneBits() {
-    return NULL;
+    return nullptr;
 }
 
 

@@ -29,6 +29,10 @@ add_library( # Sets the name of the library.
 
             util/RankSelect.cpp
             util/RankSelect.h
+            util/BitArray.cpp
+            util/BitArray.cpp
+
+            exceptions/IndexOutOfBoundsException.h
         )
 
 # Searches for a specified prebuilt library and stores the path as a

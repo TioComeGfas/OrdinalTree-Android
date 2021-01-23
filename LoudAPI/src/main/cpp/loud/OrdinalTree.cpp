@@ -4,14 +4,18 @@
 
 #include "OrdinalTree.h"
 
-OrdinalTree::OrdinalTree() {
-
-}
+OrdinalTree::OrdinalTree() { }
 
 bool OrdinalTree::build(int countNodes) {
     if(countNodes <= 0){
         return false;
     }
+
+    /**
+     * hay que ingresar todos los valores dentro de esta estructura
+     * para posteriormente procesar los valores con rank y select
+     */
+    auto* bitArray = new BitArray(countNodes);
 
     int cantidadNodosContruidos = 0;
     int posicionBitVector = 0;
@@ -64,23 +68,13 @@ bool OrdinalTree::build(int countNodes) {
         }
     }
 
-    //bitvector[0] = bitvector[0] << (unsigned) 29;
-
-    for(int i = 0; i < countNodes; i++){
-
-
-
-
-
-    }
-
-
-
-
-
-    return false;
+    return true;
 }
 
 int OrdinalTree::getRandom(int min, int max) {
     return rand() % max + min;
+}
+
+int OrdinalTree::depth(int x) {
+    return 0;
 }

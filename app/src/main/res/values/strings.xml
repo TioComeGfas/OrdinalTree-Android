@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Loud</string>
-    <string name="title_cv_top_fragment_home">Level Order Unary Degree Sequence</string>
-    <string name="title_cv_acciones_fragment_home">Cargar datos de prueba</string>
+    <string name="title_cv_top_fragment_home">Organigrama de la empresa Coca Cola</string>
+    <string name="title_cv_informacion_fragment_home">Resultados generales</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

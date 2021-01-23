@@ -63,5 +63,4 @@ public:
     long* cloneBits();
 };
 
-
 #endif //LOUD_BITARRAY_H
