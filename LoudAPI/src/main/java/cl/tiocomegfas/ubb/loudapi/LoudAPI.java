@@ -32,31 +32,31 @@ public class LoudAPI {
      * Retorna el primer hijo del nodo x
      * @param x
      */
-    public native void firstChild(int x);
+    public native void firstChild(long[] bitArray, int size, int x);
 
     /**
      * Retorna el siguiente hermano del nodo x
      * @param x
      */
-    public native void nextSibling(int x);
+    public native void nextSibling(long[] bitArray, int size, int x);
 
     /**
      * Retorna el padre del nodo x
      * @param x
      */
-    public native void parent(int x);
+    public native void parent(long[] bitArray, int size, int x);
 
     /**
      * Retorna el i-ésimo hijo del nodo x
      * @param x
      * @param i
      */
-    public native void child(int x, int i);
+    public native void child(long[] bitArray, int size, int x, int i);
 
     /**
      * Entrega la información asociada al nodo x
      * @param x
      */
-    public native void data(int x);
+    public native void data(long[] bitArray, int size, int x);
 
 }
