@@ -11,7 +11,7 @@ RankSelect::RankSelect(BitArray *bitArray){
 
 RankSelect::RankSelect(BitArray *bitArray, int factor) {
     this->length = sizeof(bitArray) / sizeof(*bitArray);
-    bits = bitArray->cloneBits();
+    //bits = bitArray->cloneBits();
     this->factor = factor;
     if(factor == 0){
         factor=20;

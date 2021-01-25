@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
         if(homeFragment == null) homeFragment = new HomeFragment();
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),homeFragment);
+                replace(frameLayout.getId(),homeFragment).commit();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Inicio");
@@ -137,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         if(implementFragment == null) implementFragment = new ImplementFragment();
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),implementFragment);
+                replace(frameLayout.getId(),implementFragment).commit();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Implementación");
@@ -154,7 +154,7 @@ public class HomeActivity extends AppCompatActivity {
         if(organigramaFragment == null) organigramaFragment = new OrganigramaFragment();
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),organigramaFragment);
+                replace(frameLayout.getId(),organigramaFragment).commit();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Organigrama");
@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
         if(experimentFragment == null) experimentFragment = new ExperimentFragment();
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),experimentFragment);
+                replace(frameLayout.getId(),experimentFragment).commit();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Experimentación");
@@ -188,7 +188,7 @@ public class HomeActivity extends AppCompatActivity {
         if(aboutFragment == null) aboutFragment = new AboutFragment();
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),aboutFragment);
+                replace(frameLayout.getId(),aboutFragment).commit();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Acerca de");

@@ -1,9 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".frontend.fragments.ExperimentFragment">
 
-</FrameLayout>
+    <!-- CARDVIEW CON LA INFORMACION DE CABEZERA -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Informacion datos"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_1000_nodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Árbol con 1.000 nodos:"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                 />
+
+            <TextView
+                android:id="@+id/tv_1000_nodes_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="No cargado"
+                />
+
+            <TextView
+                android:id="@+id/tv_10000_nodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Árbol con 10.000 nodos:"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_10000_nodes_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes_state"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="No cargado"
+                />
+
+            <TextView
+                android:id="@+id/tv_100000_nodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Árbol con 100.000 nodos:"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_100000_nodes_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes_state"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="No cargado"
+                />
+
+            <Button
+                android:id="@+id/bt_load_json"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_100000_nodes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="Cargar datos"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="20dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_table_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cv_actions">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Resultados de operación"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"
+                />
+
+            <com.evrencoskun.tableview.TableView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_table"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
