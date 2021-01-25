@@ -2,6 +2,11 @@ package cl.tiocomegfas.ubb.loudapi;
 
 public class LoudAPI {
 
+    private String[] nameLastNameArray;
+    private long[] bitArray;
+    private long length;
+    private int countNodes;
+
     /**
      * Carga de la libreria en C++
      */
@@ -9,19 +14,19 @@ public class LoudAPI {
         System.loadLibrary("loud-lib");
     }
 
-    private static final LoudAPI API = new LoudAPI();
-
-    private LoudAPI(){ }
-
-    public static LoudAPI getInstance(){
-        return API;
+    public LoudAPI(int countNodes){
+        this.countNodes = countNodes;
+        this.nameLastNameArray = new String[countNodes];
     }
 
     /**
-     * Inicializa la estructura
-     * PODRIA CARGAR DIRECTAMENTE LA INFORMACION DESDE ACA
+     * Inicializa la estructura y retorna el
+     * @param countNodes la cantidad de nodos a crear
+     * @return arreglo de bits generados
      */
-    public native void init();
+    public native long[] init(int countNodes);
+
+    public native void build(long[] bitArray, int size);
 
     /**
      * Retorna el primer hijo del nodo x

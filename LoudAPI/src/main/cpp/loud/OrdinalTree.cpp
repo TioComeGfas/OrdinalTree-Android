@@ -15,13 +15,34 @@ bool OrdinalTree::build(int countNodes) {
      * hay que ingresar todos los valores dentro de esta estructura
      * para posteriormente procesar los valores con rank y select
      */
-    auto* bitArray = new BitArray(countNodes);
+    this->bitArray = new BitArray(countNodes);
+
+    this->names = (char**) malloc(sizeof(char*) * countNodes); //un arreglo con la cantidad de nombres y apellidos
+
+    for(int i = 0; i < countNodes; i++){
+        this->names[i] = (char*) malloc(sizeof(char) * 30); //asigacion de espacio para generar un string
+    }
 
     int cantidadNodosContruidos = 0;
-    int posicionBitVector = 0;
-    int cantidadBitsDisponibles = 32;
-    auto* bitvector = (unsigned int*) malloc(sizeof(unsigned int)); //cuanto espacio le asigno ??
+    int posicionBitVector = 2;
 
+    //inserto el nodo ficticio
+    this->bitArray->setBit(0); //definiendo el 10 para el nodo ficticio
+
+    while(cantidadNodosContruidos < countNodes){
+        int cantidadHijos = getRandom(1,50);
+
+        for(int i = 1; i <= cantidadHijos; i++){
+            this->bitArray->setBit(posicionBitVector);
+            posicionBitVector++;
+            cantidadNodosContruidos++;
+        }
+
+        posicionBitVector++;
+    }
+
+
+    /*
     //inserto el nodo ficticio
     bitvector[0] = bitvector[0] & 0x80000000; // 10000000000000000000000000000000
 
@@ -67,6 +88,7 @@ bool OrdinalTree::build(int countNodes) {
             cantidadNodosContruidos++; //se creo un nuevo nodo
         }
     }
+     */
 
     return true;
 }

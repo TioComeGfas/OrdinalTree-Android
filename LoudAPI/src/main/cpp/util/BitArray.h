@@ -5,62 +5,81 @@
 #ifndef LOUD_BITARRAY_H
 #define LOUD_BITARRAY_H
 
+#include <jni.h>
+
 class BitArray {
 private:
-    static const int WORD_SIZE = 64;
-    long length;
+    static const jint WORD_SIZE = 64;
+    jlong length;
+    JNIEnv* env;
+
 protected:
-    long* bits = nullptr;
+    jlongArray bits = nullptr;
 
 public:
     /**
      * Crea un Array de bits.
-     * @param size es la cantidad de bits que tiene el ubiobio.cl.bitArray.BitArray this.
+     * @param size es la cantidad de bits que tiene el BitArray this.
      */
-    BitArray(long size);
+    BitArray(JNIEnv* env, jlong size);
+
+    /**
+     * Crea un Array de bits.
+     * @param size es la cantidad de bits que tiene el BitArray this.
+     * @param array
+     */
+    BitArray(JNIEnv* env,jlongArray array, jlong size);
 
     /**
      * Permite conocer el valor 0 o 1 de la i-ésima posición del ubiobio.cl.bitArray.BitArray
      * @param pos
      * @return
      */
-    bool getBit(int pos);
+    jboolean getBit(jint pos);
 
     /**
      * Pone en 1 el bits de la posición @pos del arreglo
      * @param pos
      */
-    void setBit(int pos);
+    void setBit(jint pos);
 
     /**
      * Pone en 0 o 1 dependiendo si b es falso o verdadero respectivamente
-     * la posición pos del ubiobio.cl.bitArray.BitArray.
+     * la posición pos del BitArray.
      * @param pos
      * @param b
      */
-    void setBit(int pos, bool b);
+    void setBit(jint pos, jboolean b);
 
     /**
      * Pone en 0 el bits de la posición pos del ubiobio.cl.bitArray.BitArray
      * @param pos
      */
-    void clearBit(int pos);
+    void clearBit(jint pos);
 
     /**
      * Retorna la cantidad de bits en el ubiobio.cl.bitArray.BitArray.
      * @return
      */
-    long getLength();
+    jlong getLength();
 
     /**
      * Retorna el tamaño del ubiobio.cl.bitArray.BitArray en byte.
      * @return
      */
-    long size();
+    jlong size();
 
-    char* toString();
+    jcharArray toString();
 
-    long* cloneBits();
+    jlongArray cloneBits();
+
+    /**
+     * Retorna el arreglo de bits que fue generado con anterioridad
+     * @return bits
+     */
+    jlongArray getBitArray();
+
+    jint getRandom(jint min, jint max);
 };
 
 #endif //LOUD_BITARRAY_H

@@ -11,8 +11,21 @@
 
 class OrdinalTree{
 private:
+
+    /**
+     * Objeto que manipula un array de bits
+     */
+    BitArray* bitArray;
+
+    /**
+     * Arreglo de string con los nombres y apellidos de las personas
+     */
+    char** names;
+
+    /**
+     * Objeto para trabajar con rank y select
+     */
     RankSelect* rankSelect;
-    int levels;
 public:
     OrdinalTree();
 
@@ -22,6 +35,8 @@ public:
      * @return
      */
     bool build(int countNodes);
+
+
     //Node* firstChildNode(int x);
     //Node* nextSiblingNode(int x);
     //Node* parentNode(int x);

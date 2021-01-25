@@ -5,58 +5,70 @@
 #include "BitArray.h"
 #include "../exceptions/IndexOutOfBoundsException.h"
 
-BitArray::BitArray(long size) {
+BitArray::BitArray(JNIEnv* env, jlong size) {
+    this->env = env;
     this->length = size;
-    //se constuye un arreglo con ceil(length/word_size) bloques.
-    bits = new long[(int)(size / WORD_SIZE + 1)];
+    bits = this->env->NewLongArray((int)(size / WORD_SIZE + 1)); //se constuye un arreglo con ceil(length/word_size) bloques.
 }
 
-bool BitArray::getBit(int pos) {
+BitArray::BitArray(JNIEnv *env, jlongArray array, jlong size) {
+    this->env = env;
+    this->length = size;
+    this->bits = array;
+    this->length = (int)(size / WORD_SIZE + 1);
+}
+
+jboolean BitArray::getBit(jint pos) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
     if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
-    return (bits[pos / WORD_SIZE] & (1l << (pos % WORD_SIZE))) != 0;
+    auto valueA = (jlong) this->env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), pos / WORD_SIZE);
+    jlong valueB = (1l << (pos % WORD_SIZE));
+    return (valueA & valueB) != 0;
 }
 
-void BitArray::setBit(int pos) {
+void BitArray::setBit(jint pos) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
     if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
-    long block = bits[pos / WORD_SIZE];
-    long mask = (long) (1l << (pos % WORD_SIZE));
-    block |=  mask;
-    bits[pos / WORD_SIZE] = block;
+    int positionAux = pos / WORD_SIZE;
+    jlong block = (jlong) this->env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux);
+    jlong mask = (1l << (pos % WORD_SIZE));
+    block |= (long) mask;
+    this->env->SetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux, reinterpret_cast<jobject>(block));
 }
 
-void BitArray::setBit(int pos, bool b) {
+void BitArray::setBit(jint pos, jboolean b) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
     if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
-    long block = bits[pos / WORD_SIZE];
-    long mask = (long) (1l << (pos % WORD_SIZE));
+    jint positionAux = pos / WORD_SIZE;
+    jlong block = (jlong) this->env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux);
+    jlong mask = (long) (1l << (pos % WORD_SIZE));
     if (b) {
         block |= mask;
     } else {
         block &= ~mask;
     }
-    bits[pos / WORD_SIZE] = block;
+    this->env->SetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux, reinterpret_cast<jobject>(block));  //bits[pos / WORD_SIZE] = block;
 }
 
-void BitArray::clearBit(int pos) {
+void BitArray::clearBit(jint pos) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
     if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
-    long block = bits[pos / WORD_SIZE];
-    long mask = (long) (1l << (pos % WORD_SIZE));
+    jint positionAux = pos / WORD_SIZE;
+    jlong block = (jlong) this->env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux);
+    jlong mask = (long) (1l << (pos % WORD_SIZE));
     block &= ~mask;
-    bits[pos / WORD_SIZE] = block;
+    this->env->SetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), positionAux, reinterpret_cast<jobject>(block)); //bits[pos / WORD_SIZE] = block;
 }
 
-long BitArray::getLength() {
+jlong BitArray::getLength() {
     return length;
 }
 
-long BitArray::size() {
+jlong BitArray::size() {
     //8 por variable this.length
     //4 por bits.length
     //8 por la referencia a bits (pensando en arquitectura de 64 bits, peor caso).
@@ -64,16 +76,22 @@ long BitArray::size() {
     return ((sizeof(bits)/sizeof(long)) * WORD_SIZE) / 8+8+4+8;
 }
 
-char *BitArray::toString() {
-    char* out = new char[length];
+jcharArray BitArray::toString() {
+    jcharArray out = this->env->NewCharArray(length);
     for (int i = 0; i < length; i++) {
-        out[i] = getBit(i) ? '1' : '0';
+        env->SetObjectArrayElement(reinterpret_cast<jobjectArray>(out), i,reinterpret_cast<jobject>(getBit(i) ? '1' : '0'));
     }
     return out;
 }
 
-long *BitArray::cloneBits() {
+jlongArray BitArray::cloneBits() {
     return nullptr;
 }
 
+jlongArray BitArray::getBitArray() {
+    return this->bits;
+}
 
+jint BitArray::getRandom(jint min, jint max) {
+    return rand() % max + min;
+}
