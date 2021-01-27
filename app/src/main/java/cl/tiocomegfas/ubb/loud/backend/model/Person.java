@@ -42,6 +42,11 @@ public class Person {
         this.sex = sex;
     }
 
+    @Override
+    public String toString() {
+        return this.name.concat(" ").concat(lastName);
+    }
+
     //Patron Builder
     public static class Builder{
         private int id;

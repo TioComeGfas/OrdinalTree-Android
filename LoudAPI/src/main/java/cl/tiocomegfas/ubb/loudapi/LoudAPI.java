@@ -59,4 +59,11 @@ public class LoudAPI {
         return nameLastNameArray[x];
     }
 
+    public long[] getBitArray() {
+        return bitArray;
+    }
+
+    public long getLength() {
+        return length;
+    }
 }
