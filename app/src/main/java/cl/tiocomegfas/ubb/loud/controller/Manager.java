@@ -136,7 +136,7 @@ public class Manager {
      * @param position
      * @return
      */
-    public String getColegas(int loudTree, int position){
+    public String[] getColegas(int loudTree, int position){
         return null;
     }
 
@@ -146,7 +146,7 @@ public class Manager {
      * @param position
      * @return
      */
-    public String getCadenaDeMando(int loudTree, int position){
+    public String[] getCadenaDeMando(int loudTree, int position){
         return null;
     }
 

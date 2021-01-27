@@ -8,11 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +24,10 @@ import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cl.tiocomegfas.library.backend.parser.Parser;
 import cl.tiocomegfas.library.frontend.top_bar.DialogTop;
 import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnLoadDataListener;
@@ -45,15 +51,30 @@ public class ExperimentFragment extends Fragment {
     TextView tv100000nodes;
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.bt_load_json)
-    Button btLoadJson;
+    @BindView(R.id.et_subordinado)
+    EditText etSubordinado;
 
-    @BindView(R.id.bt_search_subordinados)
-    Button btSubordinados;
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.et_jefe)
+    EditText etJefe;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.et_bnodo)
+    EditText etBuscarNodo;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.et_cmando)
+    EditText etCadenaMando;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.et_colegas)
+    EditText etColegas;
 
     private Context context;
     private HomeActivity activity;
     private Unbinder unbinder;
+    private int treeSelect;
+    private boolean isLoadJson;
 
     private final OnLoadDataListener listener = new OnLoadDataListener() {
         @Override
@@ -84,6 +105,7 @@ public class ExperimentFragment extends Fragment {
                     tv100000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
                 }
                 DialogTop.show(activity,"Información generada correctamente!!", DialogTop.SUCCESS);
+                isLoadJson = true;
             });
         }
 
@@ -111,6 +133,9 @@ public class ExperimentFragment extends Fragment {
         tv1000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
         tv10000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
         tv100000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
+
+        this.treeSelect = -1;
+        this.isLoadJson = false;
     }
 
     @Override
@@ -125,15 +150,123 @@ public class ExperimentFragment extends Fragment {
         Pipe.getInstance().callLoadJson(context,1000,listener);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.bt_search_subordinados)
     void onClickSubordinados(){
-        Manager.getInstance().startChronometerTree1();
+        if(TextUtils.isEmpty(etSubordinado.getText().toString())){
+            DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
+            return;
+        }
+        int indexNodo = Parser.toInteger(etSubordinado.getText().toString());
+
+        if(!checkValues(indexNodo)) return;
+        String[] request = Manager.getInstance().getSubordinados(treeSelect,indexNodo);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.bt_search_jefe)
     void onClickJefe(){
-        double value = Manager.getInstance().stopChronometerTree1();
+        if(TextUtils.isEmpty(etJefe.getText().toString())){
+            DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
+            return;
+        }
+        int indexNodo = Parser.toInteger(etJefe.getText().toString());
 
-        Toast.makeText(getContext(),value + "", Toast.LENGTH_LONG).show();
+        if(!checkValues(indexNodo)) return;
+        String request = Manager.getInstance().getJefe(treeSelect,indexNodo);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnClick(R.id.bt_search_bnodo)
+    void onClickBuscarNodo(){
+        if(TextUtils.isEmpty(etBuscarNodo.getText().toString())){
+            DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
+            return;
+        }
+        int indexNodo = Parser.toInteger(etBuscarNodo.getText().toString());
+
+        if(!checkValues(indexNodo)) return;
+        //String request = Manager.getInstance().searchNodo(treeSelect,indexNodo);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnClick(R.id.bt_search_cmando)
+    void onClickCadenaComando(){
+        if(TextUtils.isEmpty(etCadenaMando.getText().toString())){
+            DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
+            return;
+        }
+        int indexNodo = Parser.toInteger(etCadenaMando.getText().toString());
+
+        if(!checkValues(indexNodo)) return;
+        String[] request = Manager.getInstance().getCadenaDeMando(treeSelect,indexNodo);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnClick(R.id.bt_search_coelgas)
+    void onClickColegas(){
+        if(TextUtils.isEmpty(etColegas.getText().toString())){
+            DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
+            return;
+        }
+        int indexNodo = Parser.toInteger(etColegas.getText().toString());
+
+        if(!checkValues(indexNodo)) return;
+        String[] request = Manager.getInstance().getColegas(treeSelect,indexNodo);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnCheckedChanged(R.id.rb_tree_1)
+    void onCheckedTree1(boolean checked){
+        if(checked) treeSelect = Manager.LOUD_TREE_1;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnCheckedChanged(R.id.rb_tree_2)
+    void onCheckedTree2(boolean checked){
+        if(checked) treeSelect = Manager.LOUD_TREE_2;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @OnCheckedChanged(R.id.rb_tree_3)
+    void onCheckedTree3(boolean checked){
+        if(checked) treeSelect = Manager.LOUD_TREE_3;
+    }
+
+    private boolean checkValues(int indexNodo){
+        if(!isLoadJson) {
+            DialogTop.show(activity,"Antes de continuar, genere los arboles",DialogTop.PRECAUTION);
+            return false;
+        }
+
+        if(treeSelect == -1){
+            DialogTop.show(activity,"Antes de continuar, seleccione el arbol",DialogTop.PRECAUTION);
+            return false;
+        }
+
+        if(indexNodo < 0){
+            DialogTop.show(activity,"El número del nodo debe ser mayor o igual a 0",DialogTop.PRECAUTION);
+            return false;
+        }
+
+        if(treeSelect == Manager.LOUD_TREE_1){
+            if(indexNodo > 1000){
+                DialogTop.show(activity,"El número del nodo debe ser menor o igual a 1.000",DialogTop.PRECAUTION);
+                return false;
+            }
+
+        }else if(treeSelect == Manager.LOUD_TREE_2){
+            if(indexNodo > 10000){
+                DialogTop.show(activity,"El número del nodo debe ser menor o igual a 10.000",DialogTop.PRECAUTION);
+                return false;
+            }
+        }else{
+            if(indexNodo > 100000){
+                DialogTop.show(activity,"El número del nodo debe ser menor o igual a 100.000",DialogTop.PRECAUTION);
+                return false;
+            }
+        }
+
+        return true;
     }
 }
