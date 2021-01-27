@@ -23,9 +23,12 @@ private:
      */
     Cronometer();
 
-    void uswtime(double*, double*, double*);
+    void uswtime(double *usertime, double *systime, double *walltime);
 
 public:
+
+    void init(double utime0, double utime1, double stime0, double stime1,double wtime0, double wtime1);
+
     /**
      * Entrega una nueva instancia
      * @return Instancia nueva de Cronometer
@@ -67,6 +70,19 @@ public:
      * @return
      */
     double wallTime(Cronometer*);
+
+    double getUtime0() const;
+
+    double getStime0() const;
+
+    double getWtime0() const;
+
+    double getUtime1() const;
+
+    double getStime1() const;
+
+    double getWtime1() const;
+
 };
 
 #endif //LOUD_CRONOMETER_H
