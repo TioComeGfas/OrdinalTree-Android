@@ -13,7 +13,9 @@ public class Manager {
     public static final int LOUD_TREE_3 = 3;
 
     private static Manager INSTANCE;
-    private LinkedList<Person> persons;
+    private LinkedList<Person> persons1;
+    private LinkedList<Person> persons2;
+    private LinkedList<Person> persons3;
     private CronometerAPI chronometerTree1;
     private CronometerAPI chronometerTree2;
     private CronometerAPI chronometerTree3;
@@ -30,18 +32,29 @@ public class Manager {
         return INSTANCE;
     }
 
-    public Manager setPersons(LinkedList<Person> persons) {
-        this.persons = persons;
+    public Manager setPersons(int loudTree, LinkedList<Person> persons) {
+        if(loudTree < 1 || loudTree > 3) throw new IllegalArgumentException("loudTree < 1 | loudTree > 3");
+
+        if(loudTree == 1) this.persons1 = persons;
+        else if(loudTree == 2) this.persons2 = persons;
+        else this.persons3 = persons;
         return this;
     }
 
-    public LinkedList<Person> getPersons() {
-        if(persons == null) persons = new LinkedList<>();
-        return persons;
+    public LinkedList<Person> getPersons(int loudTree) {
+        if(loudTree < 1 || loudTree > 3) throw new IllegalArgumentException("loudTree < 1 | loudTree > 3");
+
+        if(loudTree == 1) return this.persons1;
+        else if(loudTree == 2) return this.persons2;
+        else return this.persons3;
     }
 
-    public String getPerson(int index){
-        return this.persons.get(index).toString();
+    public String getPerson(int loudTree, int index){
+        if(loudTree < 1 || loudTree > 3) throw new IllegalArgumentException("loudTree < 1 | loudTree > 3");
+
+        if(loudTree == 1) return this.persons1.get(index).toString();
+        else if(loudTree == 2) return this.persons2.get(index).toString();
+        else return this.persons3.get(index).toString();
     }
 
     public void startChronometerTree1(){

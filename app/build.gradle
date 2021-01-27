@@ -45,7 +45,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //LIBRERIA PARA PRESENTAR ARBOLES DE MANERA GRAFICA
-    implementation 'de.blox:graphview:0.7.1'
+    implementation 'de.blox:graphview:0.7.1' //(https://github.com/Team-Blox/GraphView)
+
+    implementation 'com.otaliastudios:zoomlayout:1.8.0' //(https://github.com/natario1/ZoomLayout)
 
     //BOTTON NAVIGATION
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.2.0'

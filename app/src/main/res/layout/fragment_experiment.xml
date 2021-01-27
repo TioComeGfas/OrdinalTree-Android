@@ -7,144 +7,289 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".frontend.fragments.ExperimentFragment">
 
-    <!-- CARDVIEW CON LA INFORMACION DE CABEZERA -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_actions"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_title_actions"
+            <!-- CARDVIEW CON LA INFORMACION DE CABEZERA -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_actions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Informacion datos"
-                android:textAlignment="center"
                 android:layout_marginTop="10dp"
-                />
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
 
-            <TextView
-                android:id="@+id/tv_1000_nodes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Árbol con 1.000 nodos:"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                 />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_1000_nodes_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="No cargado"
-                />
+                    <TextView
+                        android:id="@+id/tv_title_actions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Informacion datos"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10dp"
+                        />
 
-            <TextView
-                android:id="@+id/tv_10000_nodes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Árbol con 10.000 nodos:"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                />
+                    <TextView
+                        android:id="@+id/tv_1000_nodes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="Árbol con 1.000 nodos:"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        />
 
-            <TextView
-                android:id="@+id/tv_10000_nodes_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes_state"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="No cargado"
-                />
+                    <TextView
+                        android:id="@+id/tv_1000_nodes_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="No cargado"
+                        />
 
-            <TextView
-                android:id="@+id/tv_100000_nodes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Árbol con 100.000 nodos:"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                />
+                    <TextView
+                        android:id="@+id/tv_10000_nodes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="Árbol con 10.000 nodos:"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        />
 
-            <TextView
-                android:id="@+id/tv_100000_nodes_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes_state"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="No cargado"
-                />
+                    <TextView
+                        android:id="@+id/tv_10000_nodes_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes_state"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="No cargado"
+                        />
 
-            <Button
-                android:id="@+id/bt_load_json"
+                    <TextView
+                        android:id="@+id/tv_100000_nodes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="Árbol con 100.000 nodos:"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_100000_nodes_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes_state"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="No cargado"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_load_json"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_100000_nodes"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:text="Cargar datos"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="20dp"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARDVIEW CON LAS OPERACIONES -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_operations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_100000_nodes"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="Cargar datos"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="20dp"
-                />
+                app:layout_constraintTop_toBottomOf="@id/cv_actions"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp" >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/tv_title_operations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Operaciones disponibles"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <RadioGroup
+                        android:id="@+id/rg_trees"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_operations"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textAlignment="center">
+
+                        <RadioButton
+                            android:id="@+id/rb_tree_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Arbol con 1.000 nodos"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/rb_tree_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Arbol con 10.000 nodos"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/rb_tree_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Arbol con 100.000 nodos"
+                            />
+
+                    </RadioGroup>
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/rg_trees"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        />
+
+                    <!-- SUBORDINADOS -->
+                    <TextView
+                        android:id="@+id/tv_subtitle_subordinado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="Obtener subordinados:"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_subordinado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/tv_subtitle_subordinado"
+                        app:layout_constraintTop_toTopOf="@id/tv_subtitle_subordinado"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_subordinado"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="Ingrese el nodo a buscar"
+                        android:digits="1234567890"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textIsSelectable="false"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_search_subordinados"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_subordinado"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginTop="20dp"
+                        android:text="BUSCAR"
+                        />
+
+                    <!-- DIVISOR -->
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/bt_search_subordinados"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARDVIEW CON LOS RESULTADOS -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cv_operations"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/tv_title_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Resultado operaciones"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <com.evrencoskun.tableview.TableView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_result"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_table_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cv_actions">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_title_table"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="Resultados de operación"
-                android:textAlignment="center"
-                android:layout_marginTop="10dp"
-                />
-
-            <com.evrencoskun.tableview.TableView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_table"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
