@@ -85,7 +85,13 @@ jcharArray BitArray::toString() {
 }
 
 jlongArray BitArray::cloneBits() {
-    return nullptr;
+    jlongArray copia = env->NewLongArray(length);
+
+    for(int i=0; i < length; i++){
+        env->SetObjectArrayElement(reinterpret_cast<jobjectArray>(copia), i, env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), i));
+    }
+
+    return copia;
 }
 
 jlongArray BitArray::getBitArray() {

@@ -26,37 +26,37 @@ public class LoudAPI {
      */
     public native long[] init(int countNodes);
 
-    public native void build(long[] bitArray, int size);
-
     /**
      * Retorna el primer hijo del nodo x
      * @param x
      */
-    public native void firstChild(long[] bitArray, int size, int x);
+    public native int firstChild(long[] bitArray, int size, int x);
 
     /**
      * Retorna el siguiente hermano del nodo x
      * @param x
      */
-    public native void nextSibling(long[] bitArray, int size, int x);
+    public native int nextSibling(long[] bitArray, int size, int x);
 
     /**
      * Retorna el padre del nodo x
      * @param x
      */
-    public native void parent(long[] bitArray, int size, int x);
+    public native int parent(long[] bitArray, int size, int x);
 
     /**
      * Retorna el i-ésimo hijo del nodo x
      * @param x
      * @param i
      */
-    public native void child(long[] bitArray, int size, int x, int i);
+    public native int child(long[] bitArray, int size, int x, int i);
 
     /**
      * Entrega la información asociada al nodo x
      * @param x
      */
-    public native void data(long[] bitArray, int size, int x);
+    public String data(int x){
+        return nameLastNameArray[x];
+    }
 
 }

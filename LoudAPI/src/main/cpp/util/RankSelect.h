@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include "BitArray.h"
+#include "../exceptions/IndexOutOfBoundsException.h"
 
 using namespace std;
 
@@ -25,24 +26,27 @@ private:
     static const int WORD_SIZE= 64;
     /** mask for obtaining the first 5 bits */
     static const long mask63 = 63l;
-    long length;
-    int factor;
-    int s;
-    long ones;
-    const long* bits;
-    long* Rs; //arreglo de superBlock
+    jlong length;
+    jint factor;
+    jint s;
+    jlong ones;
+    jlongArray bits;
+    jlongArray Rs; //arreglo de superBlock
+    JNIEnv* env; //maquina virtual de Java
 
 public:
+
     /**
      * Crea un Array de bits estático con soporte para las
      * operaciones de rank y select.
      * @param ba
      */
-    RankSelect(BitArray* bitArray);
+    RankSelect(JNIEnv* env, BitArray* bitArray);
 
     /**
      * Crea un Array de bits estático con soporte para las
      * operaciones de rank y select.
+     * @param env maquina virtual de java para las operaciones de este mismo
      * @param ba, bit array a clonar, sobre el cual se opera
      * @param factor factor con el cual se determina la redundancia de la estructura
      *               si factor=2, redundancia 50%
@@ -50,7 +54,7 @@ public:
      *                  factor=4, redundancia 25%
      *                  factor=20, redundancia 5%;
      */
-    RankSelect(BitArray* bitArray, int factor);
+    RankSelect(JNIEnv* env, BitArray* bitArray, int factor);
 
     long numberOfOnes();
 

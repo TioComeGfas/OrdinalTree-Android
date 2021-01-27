@@ -17,10 +17,5 @@ public class CronometerAPI {
         return API;
     }
 
-    public native void init();
-
-    public native void startClock();
-
-    public native double stopClock();
 
 }

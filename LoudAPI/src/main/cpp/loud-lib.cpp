@@ -7,11 +7,6 @@ extern "C" JNIEXPORT jlongArray JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_
         return nullptr;
     }
 
-    char** names = (char**) malloc(sizeof(char*) * countNodes); //un arreglo con la cantidad de nombres y apellidos
-    for(int i = 0; i < countNodes; i++){
-        names[i] = (char*) malloc(sizeof(char) * 30); //asigacion de espacio para generar un string
-    }
-
     int cantidadNodosContruidos = 0;
     int posicionBitVector = 2;
 
@@ -35,45 +30,29 @@ extern "C" JNIEXPORT jlongArray JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_
     return bitArray->getBitArray();
 }
 
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_build(JNIEnv *env, jobject thiz, jlongArray _bitArray, jint size) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
+extern "C" JNIEXPORT jint JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_firstChild(JNIEnv *env, jobject thiz, jlongArray _bitArray, jint size, jint x) {
+    auto* rankSelect = new RankSelect(env, new BitArray(env, _bitArray, size));
+
+    return rankSelect->select0(rankSelect->rank1(x)) + 1;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_firstChild(JNIEnv *env, jobject thiz, jlongArray _bitArray, jint size, jint x) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
-    auto* rankSelect = new RankSelect(bitArray);
+extern "C" JNIEXPORT jint JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_nextSibling(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x) {
+    auto* rankSelect = new RankSelect(env, new BitArray(env, _bitArray, size));
 
     //valor segun el paper
-    long position= rankSelect->select0(rankSelect->rank1(x)) + 1;
+    return rankSelect->select0(rankSelect->rank0(x) + 1) + 1;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_nextSibling(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
-    auto* rankSelect = new RankSelect(bitArray);
+extern "C" JNIEXPORT jint JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_parent(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x) {
+    auto* rankSelect = new RankSelect(env, new BitArray(env, _bitArray, size));
 
     //valor segun el paper
-    long position = rankSelect->select0(rankSelect->rank0(x) + 1) + 1;
+    return rankSelect->select0(rankSelect->rank0(rankSelect->select1(rankSelect->rank0(x)))) + 1;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_parent(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
-    auto* rankSelect = new RankSelect(bitArray);
+extern "C" JNIEXPORT jint JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_child(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x, jint i) {
+    auto* rankSelect = new RankSelect(env, new BitArray(env, _bitArray, size));
 
     //valor segun el paper
-    long position = rankSelect->select0(rankSelect->rank0(rankSelect->select1(rankSelect->rank0(x)))) + 1;
-}
-
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_child(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x, jint i) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
-    auto* rankSelect = new RankSelect(bitArray);
-
-    //valor segun el paper
-    long position = rankSelect->select0(rankSelect->rank1(x + i - 1)) + 1;
-}
-
-extern "C" JNIEXPORT void JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_data(JNIEnv *env, jobject thiz,  jlongArray _bitArray, jint size, jint x) {
-    auto* bitArray = new BitArray(env, _bitArray, size);
-    auto* rankSelect = new RankSelect(bitArray);
-
-    long position = 0;
+    return rankSelect->select0(rankSelect->rank1(x + i - 1)) + 1;
 }
