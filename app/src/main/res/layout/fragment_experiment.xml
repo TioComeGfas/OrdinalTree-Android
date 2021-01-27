@@ -247,6 +247,208 @@
                         android:layout_marginEnd="10dp"
                         />
 
+                    <!-- JEFE -->
+                    <TextView
+                        android:id="@+id/tv_subtitle_jefe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="Obtener jefe:"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_jefe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/tv_subtitle_jefe"
+                        app:layout_constraintTop_toTopOf="@id/tv_subtitle_jefe"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_jefe"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="Ingrese el nodo a buscar"
+                        android:digits="1234567890"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textIsSelectable="false"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_search_jefe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_jefe"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginTop="20dp"
+                        android:text="BUSCAR"
+                        />
+
+                    <!-- DIVISOR -->
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/bt_search_jefe"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        />
+
+                    <!-- COLEGAS -->
+                    <TextView
+                        android:id="@+id/tv_subtitle_colegas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="Obtener colegas:"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_colegas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/tv_subtitle_colegas"
+                        app:layout_constraintTop_toTopOf="@id/tv_subtitle_colegas"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_colegas"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="Ingrese el nodo a buscar"
+                        android:digits="1234567890"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textIsSelectable="false"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_search_coelgas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_colegas"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginTop="20dp"
+                        android:text="BUSCAR"
+                        />
+
+                    <!-- DIVISOR -->
+                    <View
+                        android:id="@+id/divider4"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/bt_search_coelgas"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        />
+
+                    <!-- CADENA DE MANDO -->
+                    <TextView
+                        android:id="@+id/tv_subtitle_cmando"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="Obtener cadena de mando:"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_cmando"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/tv_subtitle_cmando"
+                        app:layout_constraintTop_toTopOf="@id/tv_subtitle_cmando"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_cmando"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="Ingrese el nodo a buscar"
+                        android:digits="1234567890"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textIsSelectable="false"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_search_cmando"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_cmando"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginTop="20dp"
+                        android:text="BUSCAR"
+                        />
+
+                    <!-- DIVISOR -->
+                    <View
+                        android:id="@+id/divider5"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/bt_search_cmando"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        />
+
+                    <!-- BUSCAR NODO -->
+                    <TextView
+                        android:id="@+id/tv_subtitle_bnodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="Buscar nodo:"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/et_bnodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/tv_subtitle_bnodo"
+                        app:layout_constraintTop_toTopOf="@id/tv_subtitle_bnodo"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_bnodo"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="Ingrese el nodo a buscar"
+                        android:digits="1234567890"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textIsSelectable="false"
+                        android:inputType="number"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_search_bnodo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bnodo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="BUSCAR"
+                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -281,6 +483,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_title_result"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

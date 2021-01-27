@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -46,6 +47,9 @@ public class ExperimentFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.bt_load_json)
     Button btLoadJson;
+
+    @BindView(R.id.bt_search_subordinados)
+    Button btSubordinados;
 
     private Context context;
     private HomeActivity activity;
@@ -119,5 +123,17 @@ public class ExperimentFragment extends Fragment {
     @OnClick(R.id.bt_load_json)
     void onClickLoadJson(){
         Pipe.getInstance().callLoadJson(context,1000,listener);
+    }
+
+    @OnClick(R.id.bt_search_subordinados)
+    void onClickSubordinados(){
+        Manager.getInstance().startChronometerTree1();
+    }
+
+    @OnClick(R.id.bt_search_jefe)
+    void onClickJefe(){
+        double value = Manager.getInstance().stopChronometerTree1();
+
+        Toast.makeText(getContext(),value + "", Toast.LENGTH_LONG).show();
     }
 }
