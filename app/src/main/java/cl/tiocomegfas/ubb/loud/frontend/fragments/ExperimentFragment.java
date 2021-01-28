@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -30,11 +31,15 @@ import butterknife.Unbinder;
 import cl.tiocomegfas.library.backend.parser.Parser;
 import cl.tiocomegfas.library.frontend.top_bar.DialogTop;
 import cl.tiocomegfas.ubb.loud.R;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnBuildLoudTreeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnLoadDataListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 import cl.tiocomegfas.ubb.loud.controller.Pipe;
 import cl.tiocomegfas.ubb.loud.frontend.activities.HomeActivity;
+import cl.tiocomegfas.ubb.loud.frontend.bottomsheet.RequestOperationBottomFragment;
+import de.blox.graphview.Node;
 
 public class ExperimentFragment extends Fragment {
 
@@ -76,7 +81,27 @@ public class ExperimentFragment extends Fragment {
     private int treeSelect;
     private boolean isLoadJson;
 
-    private final OnLoadDataListener listener = new OnLoadDataListener() {
+    private final OnBuildLoudTreeListener listenerBuildLoudTree = new OnBuildLoudTreeListener() {
+        @Override
+        public void onRunning() {
+
+        }
+
+        @Override
+        public void onReady(int loudTree) {
+            activity.runOnUiThread(() -> {
+                if(loudTree == Manager.LOUD_TREE_1) tv1000nodes.setText(getResources().getText(R.string.text_generado));
+                else if(loudTree == Manager.LOUD_TREE_2) tv10000nodes.setText(getResources().getText(R.string.text_generado));
+                else tv100000nodes.setText(getResources().getText(R.string.text_generado));
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+            activity.runOnUiThread(() -> DialogTop.show(activity,"Ocurrio un problema",message, DialogTop.ERROR));
+        }
+    };
+    private final OnLoadDataListener listenerLoadData = new OnLoadDataListener() {
         @Override
         public void onRunning() {
             //activity.runOnUiThread(() -> DialogTop.show(activity,"Generando información", DialogTop.SUCCESS));
@@ -88,21 +113,34 @@ public class ExperimentFragment extends Fragment {
                 Log.e("TAG",persons.size()+"");
                 int size = persons.size();
                 if(size == 1000){
-                    tv1000nodes.setText("Cargado");
+                    //Almacenamiento de las personas generadas
                     Manager.getInstance().setPersons(Manager.LOUD_TREE_1,persons);
                     tv1000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
-                    Pipe.getInstance().callLoadJson(context,10000,listener);
+                    tv1000nodes.setText(getResources().getText(R.string.text_cargado));
+                    Pipe.getInstance().callLoadJson(context,10000,listenerLoadData);
+
+                    //Creacion del arbol con las personas cargadas
+                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_1,listenerBuildLoudTree);
                     return;
                 }else if(size == 10000){
-                    tv10000nodes.setText("Cargado");
+                    //Almacenamiento de las personas generadas
                     Manager.getInstance().setPersons(Manager.LOUD_TREE_2,persons);
                     tv10000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
-                    Pipe.getInstance().callLoadJson(context,100000,listener);
+                    tv10000nodes.setText(getResources().getText(R.string.text_cargado));
+                    Pipe.getInstance().callLoadJson(context,100000,listenerLoadData);
+
+
+                    //Creacion del arbol con las personas cargadas
+                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_2,listenerBuildLoudTree);
                     return;
                 }else if(size == 100000){
-                    tv100000nodes.setText("Cargado");
+                    //Almacenamiento de las personas generadas
                     Manager.getInstance().setPersons(Manager.LOUD_TREE_3,persons);
                     tv100000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
+                    tv100000nodes.setText(getResources().getText(R.string.text_cargado));
+
+                    //Creacion del arbol con las personas cargadas
+                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_3,listenerBuildLoudTree);
                 }
                 DialogTop.show(activity,"Información generada correctamente!!", DialogTop.SUCCESS);
                 isLoadJson = true;
@@ -112,6 +150,41 @@ public class ExperimentFragment extends Fragment {
         @Override
         public void onError(String message) {
             activity.runOnUiThread(() -> DialogTop.show(activity,"Ocurrio un problema",message, DialogTop.ERROR));
+        }
+    };
+    private final OnQueryJefeListener listenerQueryJefe = new OnQueryJefeListener() {
+        @Override
+        public void onReady(String request, int ID) {
+            activity.runOnUiThread(() -> {
+                String[] values = request.split("_");
+
+                //este es el jefe
+                int id = Parser.toInteger(values[0]);
+                String person = values[1];
+
+                //este es el nodo que el jefe busco
+                String personDefault = Manager.getInstance().getPersonString(treeSelect,indexNodo);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("MODE","JEFE");
+                bundle.putInt("ID_JEFE", id);
+                bundle.putInt("ID_DEFAULT", indexNodo);
+                bundle.putString("PERSON_JEFE",person);
+                bundle.putString("PERSON_DEFAULT", personDefault);
+                bundle.putInt("TREE",treeSelect);
+
+                showBottomSheetFragment(bundle);
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onRunning() {
+
         }
     };
 
@@ -139,6 +212,16 @@ public class ExperimentFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(isLoadJson){
+            tv1000nodes.setText(getResources().getText(R.string.text_generado));
+            tv10000nodes.setText(getResources().getText(R.string.text_generado));
+            tv100000nodes.setText(getResources().getText(R.string.text_generado));
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -147,7 +230,7 @@ public class ExperimentFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.bt_load_json)
     void onClickLoadJson(){
-        Pipe.getInstance().callLoadJson(context,1000,listener);
+        Pipe.getInstance().callLoadJson(context,1000,listenerLoadData);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -173,7 +256,7 @@ public class ExperimentFragment extends Fragment {
         int indexNodo = Parser.toInteger(etJefe.getText().toString());
 
         if(!checkValues(indexNodo)) return;
-        String request = Manager.getInstance().getJefe(treeSelect,indexNodo);
+        Manager.getInstance().getJefe(context,treeSelect,indexNodo,listenerQueryJefe);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -268,5 +351,12 @@ public class ExperimentFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private void showBottomSheetFragment(Bundle bundle){
+        RequestOperationBottomFragment fragment = new RequestOperationBottomFragment();
+        fragment.setArguments(bundle);
+        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        fragment.show(activity.getSupportFragmentManager(),"RequestOperationBottomFragment");
     }
 }

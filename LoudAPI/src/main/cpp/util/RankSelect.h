@@ -16,8 +16,13 @@
 #define LOUD_RANKSELECT_H
 
 #include <cstdint>
+#include <bitset>
+#include <android/log.h>
 #include "BitArray.h"
 #include "../exceptions/IndexOutOfBoundsException.h"
+
+#define APP_NAME "module_loud jni"
+#define LOG_E(TAG) __android_log_print(ANDROID_LOG_ERROR, APP_NAME, TAG);
 
 using namespace std;
 

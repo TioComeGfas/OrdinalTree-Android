@@ -1,8 +1,12 @@
 package cl.tiocomegfas.ubb.loud.controller;
 
+import android.content.Context;
+
 import java.util.LinkedList;
 
+import cl.tiocomegfas.library.backend.parser.Parser;
 import cl.tiocomegfas.ubb.cronometer.CronometerAPI;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loudapi.LoudAPI;
 
@@ -49,7 +53,7 @@ public class Manager {
         else return this.persons3;
     }
 
-    public String getPerson(int loudTree, int index){
+    public String getPersonString(int loudTree, int index){
         if(loudTree < 1 || loudTree > 3) throw new IllegalArgumentException("loudTree < 1 | loudTree > 3");
 
         if(loudTree == 1) return this.persons1.get(index).toString();
@@ -57,56 +61,95 @@ public class Manager {
         else return this.persons3.get(index).toString();
     }
 
-    public void startChronometerTree1(){
-        if(chronometerTree1 == null) chronometerTree1 = CronometerAPI.getInstance();
-        chronometerTree1.startClock(chronometerTree1);
+    public Person[] getPersons(int loudTree, int ... values){
+        final Person[] personas = new Person[values.length];
+
+        for(int i = 0; i < values.length; i++){
+            personas[i] = getPerson(loudTree,values[i]);
+        }
+
+        return personas;
     }
 
-    public void startChronometerTree2(){
-        if(chronometerTree2 == null) chronometerTree2 = CronometerAPI.getInstance();
-        chronometerTree2.startClock(chronometerTree2);
+    public Person getPerson(int loudTree, int id){
+        if(loudTree == LOUD_TREE_1){
+            final int size = persons1.size();
+            for(int i = 0; i < size; i++){
+                Person person = persons1.get(i);
+                if(person.getId() == id){
+                    return person;
+                }
+            }
+        }else if(loudTree == LOUD_TREE_2){
+            final int size = persons2.size();
+            for(int i = 0; i < size; i++){
+                Person person = persons2.get(i);
+                if(person.getId() == id){
+                    return person;
+                }
+            }
+        }else if(loudTree == LOUD_TREE_3){
+            final int size = persons3.size();
+            for(int i = 0; i < size; i++){
+                Person person = persons3.get(i);
+                if(person.getId() == id){
+                    return person;
+                }
+            }
+        }
+
+        throw new IllegalStateException("Not found person");
     }
 
-    public void startChronometerTree3(){
-        if(chronometerTree3 == null) chronometerTree3 = CronometerAPI.getInstance();
-        chronometerTree3.startClock(chronometerTree3);
+    public void startChronometer(int loudTree){
+        if(loudTree == LOUD_TREE_1){
+            if(chronometerTree1 == null) chronometerTree1 = CronometerAPI.getInstance();
+            chronometerTree1.startClock(chronometerTree1);
+        }else if(loudTree == LOUD_TREE_2){
+            if(chronometerTree2 == null) chronometerTree2 = CronometerAPI.getInstance();
+            chronometerTree2.startClock(chronometerTree2);
+        }else if(loudTree == LOUD_TREE_3){
+            if(chronometerTree3 == null) chronometerTree3 = CronometerAPI.getInstance();
+            chronometerTree3.startClock(chronometerTree3);
+        }
+
+        throw new IllegalStateException("loudTree invalido");
     }
 
-    public double stopChronometerTree1(){
-        if(chronometerTree1 == null) throw new IllegalStateException("Chronometer is invalid");
-        double request = chronometerTree1.stopClock(chronometerTree1);
-        chronometerTree1 = null;
-        return request;
+    public double stopChronometer(int loudTree){
+        if(loudTree == LOUD_TREE_1){
+            if(chronometerTree1 == null) throw new IllegalStateException("Chronometer is invalid");
+            double request = chronometerTree1.stopClock(chronometerTree1);
+            chronometerTree1 = null;
+            return request;
+        }else if(loudTree == LOUD_TREE_2){
+            if(chronometerTree2 == null) throw new IllegalStateException("Chronometer is invalid");
+            double request = chronometerTree2.stopClock(chronometerTree2);
+            chronometerTree2 = null;
+            return request;
+        }else if(loudTree == LOUD_TREE_3){
+            if(chronometerTree3 == null) throw new IllegalStateException("Chronometer is invalid");
+            double request = chronometerTree3.stopClock(chronometerTree3);
+            chronometerTree3 = null;
+            return request;
+        }
 
+        throw new IllegalStateException("loudTree invalido");
     }
 
-    public double stopChronometerTree2(){
-        if(chronometerTree2 == null) throw new IllegalStateException("Chronometer is invalid");
-        double request = chronometerTree2.stopClock(chronometerTree2);
-        chronometerTree2 = null;
-        return request;
-    }
+    public void buildLoudTree(int loudTree, int countNodes){
+        if(loudTree == LOUD_TREE_1){
+            if(loudTree1 == null) loudTree1 = new LoudAPI(countNodes);
+            loudTree1.setBitArray(loudTree1.init(countNodes));
+        }else if(loudTree == LOUD_TREE_2){
+            if(loudTree2 == null) loudTree2 = new LoudAPI(countNodes);
+            loudTree2.setBitArray(loudTree2.init(countNodes));
+        }else if(loudTree == LOUD_TREE_3){
+            if(loudTree3 == null) loudTree3 = new LoudAPI(countNodes);
+            loudTree3.setBitArray(loudTree3.init(countNodes));
+        }
 
-    public double stopChronometerTree3(){
-        if(chronometerTree3 == null) throw new IllegalStateException("Chronometer is invalid");
-        double request = chronometerTree3.stopClock(chronometerTree3);
-        chronometerTree3 = null;
-        return request;
-    }
-
-    public void buildLoudTree1(int countNodes){
-        if(loudTree1 == null) loudTree1 = new LoudAPI(countNodes);
-        loudTree1.init(countNodes);
-    }
-
-    public void buildLoudTree2(int countNodes){
-        if(loudTree2 == null) loudTree2 = new LoudAPI(countNodes);
-        loudTree2.init(countNodes);
-    }
-
-    public void buildLoudTree3(int countNodes){
-        if(loudTree3 == null) loudTree3 = new LoudAPI(countNodes);
-        loudTree3.init(countNodes);
+        throw new IllegalStateException("loudTree invalido");
     }
 
     /**
@@ -126,8 +169,8 @@ public class Manager {
      * @param position
      * @return
      */
-    public String getJefe(int loudTree, int position){
-        return null;
+    public void getJefe(Context context, int loudTree, int position, OnQueryJefeListener listener){
+        Pipe.getInstance().callQueryJefe(context,loudTree,position,listener);
     }
 
     /**
@@ -193,13 +236,15 @@ public class Manager {
 
         if(loudTree == LOUD_TREE_1){
             int pos = loudTree1.nextSibling(loudTree1.getBitArray(), (int)loudTree1.getLength(),position);
-            return loudTree1.data(pos);
+            return Parser.toString(pos).concat("_").concat(loudTree1.data(pos));
+
         }else if(loudTree == LOUD_TREE_2){
             int pos = loudTree2.nextSibling(loudTree1.getBitArray(), (int)loudTree2.getLength(),position);
-            return loudTree2.data(pos);
+            return Parser.toString(pos).concat("_").concat(loudTree2.data(pos));
+
         }else{
             int pos = loudTree3.nextSibling(loudTree3.getBitArray(), (int)loudTree3.getLength(),position);
-            return loudTree3.data(pos);
+            return Parser.toString(pos).concat("_").concat(loudTree3.data(pos));
         }
     }
 
@@ -207,14 +252,15 @@ public class Manager {
         if(loudTree <= 0 || loudTree > 3) throw new IllegalArgumentException("loudTree > 0 && loudTree < 4");
 
         if(loudTree == LOUD_TREE_1){
-            int pos = loudTree1.parent(loudTree1.getBitArray(), (int)loudTree1.getLength(),position);
-            return loudTree1.data(pos);
+            int pos = loudTree1.parent(loudTree1.getBitArray(), (int)loudTree1.getLength(), position);
+            return Parser.toString(pos).concat("_").concat(loudTree1.data(pos));
+
         }else if(loudTree == LOUD_TREE_2){
-            int pos = loudTree2.parent(loudTree1.getBitArray(), (int)loudTree2.getLength(),position);
-            return loudTree2.data(pos);
+            int pos = loudTree2.parent(loudTree1.getBitArray(), (int)loudTree2.getLength(), position);
+            return Parser.toString(pos).concat("_").concat(loudTree2.data(pos));
         }else{
-            int pos = loudTree3.parent(loudTree3.getBitArray(), (int)loudTree3.getLength(),position);
-            return loudTree3.data(pos);
+            int pos = loudTree3.parent(loudTree3.getBitArray(), (int)loudTree3.getLength(), position);
+            return Parser.toString(pos).concat("_").concat(loudTree3.data(pos));
         }
     }
 

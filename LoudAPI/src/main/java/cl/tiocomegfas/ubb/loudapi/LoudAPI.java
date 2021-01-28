@@ -66,4 +66,8 @@ public class LoudAPI {
     public long getLength() {
         return length;
     }
+
+    public void setBitArray(long[] bitArray) {
+        this.bitArray = bitArray;
+    }
 }

@@ -53,10 +53,6 @@ public class OrganigramaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         graph = new Graph();
-        final Node rootFalse = new Node("Root");
-        final Node rootReal = new Node("");
-
-
 
         final Node node1 = new Node("Parent");
         final Node node2 = new Node("Child 1");
@@ -65,19 +61,10 @@ public class OrganigramaFragment extends Fragment {
         graph.addEdge(node1, node2);
         graph.addEdge(node1, node3);
 
-        Person person = new Person.Builder().setId(1).setSex(Sex.MALE).setName("Fredy").setLastName("Moncada").build();
-        Person person2 = new Person.Builder().setId(2).setSex(Sex.FEMALE).setName("Marcela").setLastName("Contreras").build();
-        Person person3 = new Person.Builder().setId(3).setSex(Sex.MALE).setName("Jose").setLastName("Moncada").build();
-
-        LinkedList<Person> personas = new LinkedList<>();
-        personas.add(person);
-        personas.add(person2);
-        personas.add(person3);
-        Manager.getInstance().setPersons(-1,personas);
 
         Person[] personasArray = new Person[3];
-        GraphAdapter adapter = new GraphAdapter(graph, personas.toArray(personasArray));
-        graphView.setAdapter(adapter);
+        //GraphAdapter adapter = new GraphAdapter(graph, personas.toArray(personasArray));
+        //graphView.setAdapter(adapter);
 
         final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
                 .setSiblingSeparation(50)

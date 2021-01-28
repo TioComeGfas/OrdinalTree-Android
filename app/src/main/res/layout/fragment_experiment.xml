@@ -37,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="Informacion datos"
+                        android:text="@string/text_title_cv_cabezera_experiment"
                         android:textAlignment="center"
                         android:layout_marginTop="10dp"
                         />
@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:text="Árbol con 1.000 nodos:"
+                        android:text="@string/text_arbol_1000_nodos"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         />
@@ -61,7 +61,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="No cargado"
+                        android:text="@string/text_no_cargado"
                         />
 
                     <TextView
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:text="Árbol con 10.000 nodos:"
+                        android:text="@string/text_arbol_10000_nodos"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         />
@@ -83,7 +83,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="No cargado"
+                        android:text="@string/text_no_cargado"
                         />
 
                     <TextView
@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:text="Árbol con 100.000 nodos:"
+                        android:text="@string/text_arbol_100000_nodos"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         />
@@ -105,7 +105,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="No cargado"
+                        android:text="@string/text_no_cargado"
                         />
 
                     <Button
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_100000_nodes"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="Cargar datos"
+                        android:text="@string/text_bt_cargar_datos"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="40dp"
                         android:layout_marginEnd="40dp"
@@ -146,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="Operaciones disponibles"
+                        android:text="@string/text_title_cv_operations_experiment"
                         android:textAlignment="center"
                         android:layout_marginTop="10dp"
                         />
@@ -165,21 +165,21 @@
                             android:id="@+id/rb_tree_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Arbol con 1.000 nodos"
+                            android:text="@string/text_arbol_1000_nodos"
                             />
 
                         <RadioButton
                             android:id="@+id/rb_tree_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Arbol con 10.000 nodos"
+                            android:text="@string/text_arbol_10000_nodos"
                             />
 
                         <RadioButton
                             android:id="@+id/rb_tree_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Arbol con 100.000 nodos"
+                            android:text="@string/text_arbol_100000_nodos"
                             />
 
                     </RadioGroup>
