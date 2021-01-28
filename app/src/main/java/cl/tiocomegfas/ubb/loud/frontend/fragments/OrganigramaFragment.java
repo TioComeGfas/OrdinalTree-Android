@@ -53,6 +53,11 @@ public class OrganigramaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         graph = new Graph();
+        final Node rootFalse = new Node("Root");
+        final Node rootReal = new Node("");
+
+
+
         final Node node1 = new Node("Parent");
         final Node node2 = new Node("Child 1");
         final Node node3 = new Node("Child 2");
