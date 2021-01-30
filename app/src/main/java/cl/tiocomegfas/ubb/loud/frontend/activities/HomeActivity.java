@@ -124,7 +124,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Inicio");
-            getSupportActionBar().setSubtitle("Presentación de la APP");
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_blue_500));
             getSupportActionBar().setBackgroundDrawable(colorDrawable);
@@ -141,7 +140,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Implementación");
-            getSupportActionBar().setSubtitle("Código fuente de la estructura de datos sucinta LOUDS");
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_green_500));
             getSupportActionBar().setBackgroundDrawable(colorDrawable);
@@ -158,7 +156,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Organigrama");
-            getSupportActionBar().setSubtitle("El organigrama de Coca Cola Company");
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_purple_500));
             getSupportActionBar().setBackgroundDrawable(colorDrawable);
@@ -175,7 +172,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Experimentación");
-            getSupportActionBar().setSubtitle("Experimentos y resultados obtenidos");
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_orange_500));
             getSupportActionBar().setBackgroundDrawable(colorDrawable);
@@ -192,7 +188,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Acerca de");
-            getSupportActionBar().setSubtitle("Codigo libre utilizado e información de la APP");
 
             ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.md_brown_500));
             getSupportActionBar().setBackgroundDrawable(colorDrawable);

@@ -23,9 +23,9 @@ public class BuildLoudTreeThread implements Runnable{
     public void run() {
         listener.onRunning();
 
-        if(loudTree == Manager.LOUD_TREE_1) Manager.getInstance().buildLoudTree1(1000);
-        else if(loudTree == Manager.LOUD_TREE_2) Manager.getInstance().buildLoudTree2(10000);
-        else if(loudTree == Manager.LOUD_TREE_3) Manager.getInstance().buildLoudTree1(100000);
+        if(loudTree == Manager.LOUD_TREE_1) Manager.getInstance().buildLoudTree(loudTree,1000);
+        else if(loudTree == Manager.LOUD_TREE_2) Manager.getInstance().buildLoudTree(loudTree,10000);
+        else if(loudTree == Manager.LOUD_TREE_3) Manager.getInstance().buildLoudTree(loudTree,100000);
         else {
             listener.onError("loudTree > 0 & loudTree < 4");
             return;

@@ -25,6 +25,165 @@
     <string name="code_c_bitarray_cpp">THIS CODE C</string>
     <string name="code_c_rankselect_h">THIS CODE C</string>
     <string name="code_c_rankselect_cpp">THIS CODE C</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tv_definicion_problema">
+        "
+        Implementar la estructura de datos sucinta Level Order Unary Degree Sequence (LOUDS) y sus algoritmos.
+        Posteriormente usando la implementación de LOUDS, crear una aplicación que permita realizar consultas sobre un organigrama de una empresa (Coca-Cola)
+
+        Todas las operaciones solicitadas estan en esta APP, por lo tanto, esta es la tarea semestral de la asignatura Estructura de datos compactas 2020-2
+        "
+    </string>
+
+    <string name="licence_graphview">
+        "               Copyright 2020 Team-Blox
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+        express or implied.
+
+        See the License for the specific language governing permissions and
+        limitations under the License."
+    </string>
+    <string name="link_graphview"><a href="https://github.com/Team-Blox/GraphView">https://github.com/Team-Blox/GraphView</a></string>
+
+    <string name="licence_zoomlayout">
+        "
+
+   Copyright 2017 Otalia Studios
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+    </string>
+    <string name="link_zoomlayout"><a href="https://github.com/natario1/ZoomLayout">https://github.com/natario1/ZoomLayout</a></string>
+
+    <string name="licence_bottom_navigation_bar">
+        "
+
+   Copyright [2018] [Ashok Varma]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+    </string>
+    <string name="link_bottom_navigation_bar"><a href="https://github.com/Ashok-Varma/BottomNavigation">https://github.com/Ashok-Varma/BottomNavigation</a></string>
+
+    <string name="licence_butterknife">
+        "
+
+   Copyright 2013 Jake Wharton
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+    </string>
+    <string name="link_butterknife"><a href="https://github.com/JakeWharton/butterknife">https://github.com/JakeWharton/butterknife</a></string>
+
+    <string name="licence_codeview">
+        "
+
+        Copyright © 2016 Kirill Biakov
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE."
+    </string>
+    <string name="link_codeview"><a href="https://github.com/kbiakov/CodeView-Android">https://github.com/kbiakov/CodeView-Android</a></string>
+
+    <string name="licence_tableview">
+        "
+
+        Copyright © 2017 Evren Coşkun
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE."
+    </string>
+    <string name="link_tableview"><a href="https://github.com/evrencoskun/TableView">https://github.com/evrencoskun/TableView</a></string>
+
+    <string name="licence_core_utilities">
+        "
+
+        Copyright © 2020 TioComeGfas
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE."
+    </string>
+    <string name="link_core_utilities"><a href="https://github.com/TioComeGfas/Core-Utilities">https://github.com/TioComeGfas/Core-Utilities</a></string>
+
 </resources>

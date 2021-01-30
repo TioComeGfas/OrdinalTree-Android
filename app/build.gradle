@@ -62,5 +62,5 @@ dependencies {
 
     implementation 'com.evrencoskun.library:tableview:0.8.9.2' //(https://github.com/evrencoskun/TableView)
 
-    implementation 'com.github.TioComeGfas:Core-Utilities:1.7'
+    implementation 'com.github.TioComeGfas:Core-Utilities:1.7' //(https://github.com/TioComeGfas/Core-Utilities)
 }

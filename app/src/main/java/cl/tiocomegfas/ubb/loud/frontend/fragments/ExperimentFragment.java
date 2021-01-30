@@ -163,12 +163,12 @@ public class ExperimentFragment extends Fragment {
                 String person = values[1];
 
                 //este es el nodo que el jefe busco
-                String personDefault = Manager.getInstance().getPersonString(treeSelect,indexNodo);
+                String personDefault = Manager.getInstance().getPersonString(treeSelect,-1);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("MODE","JEFE");
                 bundle.putInt("ID_JEFE", id);
-                bundle.putInt("ID_DEFAULT", indexNodo);
+                bundle.putInt("ID_DEFAULT", -1);
                 bundle.putString("PERSON_JEFE",person);
                 bundle.putString("PERSON_DEFAULT", personDefault);
                 bundle.putInt("TREE",treeSelect);
