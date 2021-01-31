@@ -1,6 +1,7 @@
 package cl.tiocomegfas.ubb.loud.frontend.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cl.tiocomegfas.library.backend.parser.Parser;
+import cl.tiocomegfas.library.frontend.center_bar.LoadingDialog;
 import cl.tiocomegfas.library.frontend.top_bar.DialogTop;
 import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnBuildLoudTreeListener;
@@ -78,6 +80,7 @@ public class ExperimentFragment extends Fragment {
     private Context context;
     private HomeActivity activity;
     private Unbinder unbinder;
+    private AlertDialog dialog;
     private int treeSelect;
     private boolean isLoadJson;
 
@@ -156,6 +159,7 @@ public class ExperimentFragment extends Fragment {
         @Override
         public void onReady(String request, int ID) {
             activity.runOnUiThread(() -> {
+                dialog.cancel();
                 String[] values = request.split("_");
 
                 //este es el jefe
@@ -179,12 +183,17 @@ public class ExperimentFragment extends Fragment {
 
         @Override
         public void onError(String message) {
-
+            dialog.cancel();
         }
 
         @Override
         public void onRunning() {
-
+            activity.runOnUiThread(() -> {
+                ExperimentFragment.this.dialog = LoadingDialog.show(context);
+                dialog.setMessage("Realizando la consulta");
+                dialog.setCancelable(false);
+                dialog.show();
+            });
         }
     };
 
@@ -230,6 +239,11 @@ public class ExperimentFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @OnClick(R.id.bt_load_json)
     void onClickLoadJson(){
+        if(isLoadJson) {
+            DialogTop.show(activity,"Ya se encuentra cargada la información en el sistema",DialogTop.INFORMATION);
+            return;
+        }
+
         Pipe.getInstance().callLoadJson(context,1000,listenerLoadData);
     }
 

@@ -7,17 +7,16 @@
 #include "../exceptions/IndexOutOfBoundsException.h"
 
 #define APP_NAME "module_loud jni"
-#define LOG_E(TAG) __android_log_print(ANDROID_LOG_ERROR, APP_NAME, TAG);
+#define LOG_E(...) __android_log_print(ANDROID_LOG_ERROR,APP_NAME,__VA_ARGS__)
 
 BitArray::BitArray(JNIEnv* env, jlong size) {
     this->env = env;
-    this->length = size * WORD_SIZE;
-    bits = this->env->NewLongArray((int)(size / WORD_SIZE + 1)); //se constuye un arreglo con ceil(length/word_size) bloques.
+    this->length = (int)(size / WORD_SIZE + 1);
+    bits = this->env->NewLongArray(length); //se constuye un arreglo con ceil(length/word_size) bloques.
 }
 
 BitArray::BitArray(JNIEnv *env, jlongArray array, jlong size) {
     this->env = env;
-    this->length = size * WORD_SIZE;
     this->bits = array;
     this->length = (int)(size / WORD_SIZE + 1);
 }
@@ -33,18 +32,18 @@ jboolean BitArray::getBit(jint pos) {
 
 void BitArray::setBit(jint pos) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
-    if(pos > length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
+    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
     jlong* array = this->env->GetLongArrayElements(bits, (jboolean *)false);
 
     jint positionAux = pos / WORD_SIZE;
     jlong block = array[positionAux];
     jlong mask = (1l << (pos % WORD_SIZE));
-    block |= (jlong) mask;
+    block |= mask;
     array[positionAux] = block;
 
     int size = this->env->GetArrayLength(bits);
-    this->env->SetLongArrayRegion(bits,0,size,array);
+    this->env->SetLongArrayRegion(bits,0,length,array);
 }
 
 void BitArray::setBit(jint pos, jboolean b) {
@@ -63,8 +62,7 @@ void BitArray::setBit(jint pos, jboolean b) {
     }
     array[positionAux] = block;
 
-    int size = this->env->GetArrayLength(bits);
-    this->env->SetLongArrayRegion(bits,0,size,array);
+    this->env->SetLongArrayRegion(bits,0,length,array);
 }
 
 void BitArray::clearBit(jint pos) {
@@ -96,11 +94,13 @@ jlong BitArray::size() {
 }
 
 jcharArray BitArray::toString() {
-    jcharArray out = this->env->NewCharArray(length);
+    jcharArray out = this->env->NewCharArray(length*WORD_SIZE +1);
     jchar* array = this->env->GetCharArrayElements(out,(jboolean*)false);
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < (length*WORD_SIZE +1); i++) {
         array[i] = getBit(i) ? '1' : '0';
+
+        if(array[i] == '1') LOG_E("VALOR[%i]= %c",i, array[i]);
     }
 
     this->env->SetCharArrayRegion(out,0,length,array);
@@ -109,18 +109,11 @@ jcharArray BitArray::toString() {
 
 jlongArray BitArray::cloneBits() {
     LOG_E("CLONE BITS");
-    LOG_E("NEW ARRAY BITS");
     jlongArray copia = env->NewLongArray(length);
 
-    if(this->bits == nullptr) LOG_E("NUUULOOOOOOO");
-
-    LOG_E("CLONE ARRAY BITS");
     jlong* array = this->env->GetLongArrayElements(bits, (jboolean *)false);
 
-    LOG_E("SAVE ARRAY BITS");
     env->SetLongArrayRegion(copia,0,length,array);
-
-    LOG_E("RETURN");
     return copia;
 }
 

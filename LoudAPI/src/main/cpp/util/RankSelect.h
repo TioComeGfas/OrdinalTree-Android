@@ -22,7 +22,7 @@
 #include "../exceptions/IndexOutOfBoundsException.h"
 
 #define APP_NAME "module_loud jni"
-#define LOG_E(TAG) __android_log_print(ANDROID_LOG_ERROR, APP_NAME, TAG);
+#define LOG_E(...) __android_log_print(ANDROID_LOG_ERROR,APP_NAME,__VA_ARGS__)
 
 using namespace std;
 
@@ -46,7 +46,7 @@ public:
      * operaciones de rank y select.
      * @param ba
      */
-    RankSelect(JNIEnv* env, BitArray* bitArray);
+    RankSelect(JNIEnv* env, BitArray* bitArray, int size);
 
     /**
      * Crea un Array de bits estático con soporte para las
@@ -59,7 +59,7 @@ public:
      *                  factor=4, redundancia 25%
      *                  factor=20, redundancia 5%;
      */
-    RankSelect(JNIEnv* env, BitArray* bitArray, int factor);
+    RankSelect(JNIEnv* env, BitArray* bitArray, int factor, int size);
 
     long numberOfOnes();
 

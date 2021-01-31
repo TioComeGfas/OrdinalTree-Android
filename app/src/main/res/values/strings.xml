@@ -1,7 +1,27 @@
 <resources>
     <string name="app_name">Loud</string>
     <string name="title_cv_top_fragment_home">Organigrama de la empresa Coca Cola</string>
-    <string name="title_cv_informacion_fragment_home">Resultados generales</string>
+    <string name="title_cv_informacion_fragment_home">Introducción</string>
+    <string name="title_cv_acciones_fragment_home">Acciones soportadas</string>
+    <string name="accion_1_fragment_home">* Obtener el jefe de un trabajador</string>
+    <string name="accion_2_fragment_home">* Obtener los subordinados de un trabajador</string>
+    <string name="accion_3_fragment_home">* Obtener la cadena de mando de un trabajador</string>
+    <string name="accion_4_fragment_home">* Obtener los colegas de un trabajador</string>
+    <string name="accion_5_fragment_home">* Obtener información de un trabajador</string>
+    <string name="accion_6_fragment_home">* Obtener la información de un trabajador</string>
+
+    <string name="history_fragment_home">
+        Coca-Cola, conocida comúnmente como Coca en muchos países hispanohablantes (en inglés Coke),
+        es una bebida gaseosa y refrescante vendida a nivel mundial en tiendas, restaurantes y
+        máquinas expendedoras en más de doscientos países o territorios.
+
+        Es un producto de The Coca-Cola Company, de origen estadounidense. En un principio, cuando
+        la inventó el farmacéutico John Pemberton, fue concebida como una bebida medicinal patentada,
+        aunque fue adquirida posteriormente por el empresario Asa Griggs Candler, que hizo de la
+        bebida una de las más consumidas del siglo XX, y del siglo XXI.
+    </string>
+
+
 
     <string name="title_cv_implement_fragment">Seleccione un archivo a visualizar</string>
 

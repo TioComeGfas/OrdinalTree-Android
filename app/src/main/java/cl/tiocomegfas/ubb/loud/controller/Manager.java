@@ -141,12 +141,15 @@ public class Manager {
         if(loudTree == LOUD_TREE_1){
             if(loudTree1 == null) loudTree1 = new LoudAPI(countNodes);
             loudTree1.setBitArray(loudTree1.init(countNodes));
+            return;
         }else if(loudTree == LOUD_TREE_2){
             if(loudTree2 == null) loudTree2 = new LoudAPI(countNodes);
             loudTree2.setBitArray(loudTree2.init(countNodes));
+            return;
         }else if(loudTree == LOUD_TREE_3){
             if(loudTree3 == null) loudTree3 = new LoudAPI(countNodes);
             loudTree3.setBitArray(loudTree3.init(countNodes));
+            return;
         }
 
         throw new IllegalStateException("loudTree invalido");

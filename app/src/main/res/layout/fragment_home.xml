@@ -53,7 +53,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- CARDVIEW ACCIONES -->
+        <!-- CARDVIEW INTRODUCCION -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_informacion"
             android:layout_width="match_parent"
@@ -81,16 +81,122 @@
                     android:layout_marginTop="10dp"
                     />
 
-                <com.evrencoskun.tableview.TableView
-                    android:id="@+id/table_result"
+                <TextView
+                    android:id="@+id/tv_historia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/tv_titulo_informacion"
-                    app:column_header_height="@dimen/column_header_height"
-                    app:row_header_width="@dimen/row_header_width"
-                    app:selected_color="@color/selected_background_color"
-                    app:shadow_color="@color/shadow_background_color"
-                    app:unselected_color="@color/unselected_background_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/history_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- CARDVIEW ACCIONES -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_acciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:layout_constraintTop_toBottomOf="@id/cv_informacion">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_titulo_acciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_cv_acciones_fragment_home"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_marginTop="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_titulo_acciones"
+                    android:text="@string/accion_1_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accion_1"
+                    android:text="@string/accion_2_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accion_2"
+                    android:text="@string/accion_2_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accion_3"
+                    android:text="@string/accion_2_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accion_4"
+                    android:text="@string/accion_2_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_accion_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accion_5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/accion_2_fragment_home"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

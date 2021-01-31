@@ -4,21 +4,22 @@
 
 #include "RankSelect.h"
 
-RankSelect::RankSelect(JNIEnv* env, BitArray* bitArray) : RankSelect(env, bitArray, 20){ }
+RankSelect::RankSelect(JNIEnv* env, BitArray* bitArray, int size) : RankSelect(env, bitArray, 20, size){ }
 
-RankSelect::RankSelect(JNIEnv* env, BitArray* bitArray, int factor) {
-    LOG_E("init rankselect");
+RankSelect::RankSelect(JNIEnv* env, BitArray* bitArray, int factor, int size) {
     this->env = env;
-    LOG_E("length rankselect");
-    this->length = env->GetArrayLength(bitArray->getBitArray()) * WORD_SIZE;
+    this->length = size;
+
     this->factor = factor;
-    LOG_E("clone bits rank");
     bits = bitArray->cloneBits();
     if(factor == 0) factor = 20;
     s = WORD_SIZE * factor;
-    LOG_E("build rank");
+
     buildRank();
+
     ones = rank1(length - 1);
+
+    bitArray->toString();
 }
 
 long RankSelect::numberOfOnes() {
@@ -32,8 +33,16 @@ bool RankSelect::access(long pos) {
 }
 
 long RankSelect::rank1(long pos) {
-    if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: " [ pos]);
-    if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
+    LOG_E("rank 1");
+
+    if(pos < 0) {
+        LOG_E("pos < 0");
+        throw IndexOutOfBoundsException(&"pos < 0: " [ pos]);
+    }
+
+    if(pos >= (length * WORD_SIZE) - 1) {
+        throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
+    }
 
     jlong* arrayRs = this->env->GetLongArrayElements(Rs,(jboolean *) false);
     jlong* arrayBits = this->env->GetLongArrayElements(bits,(jboolean *) false);
@@ -42,23 +51,32 @@ long RankSelect::rank1(long pos) {
     int p = (int)(i/s);
     long resp = arrayRs[p];
     int aux = p * factor;
+
     for (int a = aux; a < (i / WORD_SIZE) ; a++){
         resp += countBits(arrayBits[a]);
     }
 
-    resp += countBits(arrayBits[(int)(i / WORD_SIZE) & ((1l << (i & mask63)) - 1l)]);
+    int posA = (int)(i / WORD_SIZE);
+    int posB = (1l << ((i & mask63) - 1l));
+    int posC = posA & posB;
+
+    resp += countBits(arrayBits[posC]);
     return resp;
 }
 
 long RankSelect::select1(long i) {
-    long x=i;
+    LOG_E("select 1");
+    long x = i;
     // returns i such that x=rank(i) && rank(i-1)<x or n if that i not exist
     // first binary search over first level rank structure
     // then sequential search using popcount over a int
     // then sequential search using popcount over a char
     // then sequential search bit a bit
     if(i <= 0) throw IndexOutOfBoundsException(&"i <= 0: " [ i]);;
-    if(i > ones) throw IndexOutOfBoundsException(&"i > amount of ones:"[ i]);
+    if(i > ones) {
+        LOG_E("i= %i ; ones= %i", i, ones);
+        throw IndexOutOfBoundsException(&"%i > amount of ones:"[ i]);
+    }
 
     jlong* arrayRs = this->env->GetLongArrayElements(Rs,(jboolean *) false);
     jlong* arrayBits = this->env->GetLongArrayElements(bits,(jboolean *) false);
@@ -122,19 +140,16 @@ long RankSelect::select1(long i) {
 }
 
 int RankSelect::countBits(long value) {
-    int count = 0;
-    while (value) {
-        count += value & 0x1u;
-        value >>= 1;
-    }
-    return count;
+    return log2(value) + 1;
 }
 
 long RankSelect::rank0(long pos) {
+    LOG_E("rank 0");
     return pos - rank1(pos) + 1;
 }
 
 long RankSelect::select0(long i) {
+    LOG_E("select 0");
     long x = i;
     // returns i such that x=rank_0(i) && rank_0(i-1)<x or exception if that i not exist
     // first binary search over first level rank structure
