@@ -1,7 +1,8 @@
 #include <jni.h>
 #include <string>
 #include <android/log.h>
-#include "loud/OrdinalTree.h"
+#include "util/BitArray.h"
+#include "util/RankSelect.h"
 
 #define APP_NAME "module_loud jni"
 #define LOG_E(...) __android_log_print(ANDROID_LOG_ERROR,APP_NAME,__VA_ARGS__)
