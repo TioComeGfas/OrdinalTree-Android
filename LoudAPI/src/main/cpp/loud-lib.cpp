@@ -13,40 +13,47 @@ extern "C" JNIEXPORT jlongArray JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_
     }
 
     jint cantidadNodosContruidos = 0;
-    jint posicionBitVector = 2;
-    jint posicionAuxBitVector = posicionBitVector;
+    jint posBitVector = 0;
+    jint posElement = 0;
 
     auto* bitArray = new BitArray(env, countNodes);
 
     //inserto el nodo ficticio
     //definiendo el 10 para el nodo ficticio
-    bitArray->setBit(0,true);
-    bitArray->setBit(0, false);
+    bitArray->setBit(0,0);
+    posElement += 2;
 
     for(int i = 0; i < countNodes; i++){
         int cantidadHijos = bitArray->getRandom(1,50);
 
-        int restantes = countNodes - posicionBitVector;
-        if(restantes <= cantidadHijos) {
-            cantidadHijos = restantes;
+        long diferencia = 0;
+        if(posBitVector == bitArray->getLength() - 1){
+            diferencia = BitArray::WORD_SIZE - posElement;
+            if(cantidadHijos > diferencia){
+                cantidadHijos = diferencia - 1;
+            }
         }
-
-        if(restantes <= 0) break;
-
 
         for(int j = 0; j < cantidadHijos; j++){
-            posicionAuxBitVector = posicionBitVector / 64;
-            bitArray->setBit(posicionAuxBitVector,true);
-            posicionBitVector++;
+            if(posElement == BitArray::WORD_SIZE) {
+                posBitVector++;
+                posElement = 0;
+            }
+
+            bitArray->setBit(posBitVector,posElement);
             cantidadNodosContruidos++;
+            posElement++;
         }
 
-        posicionBitVector++;
+        if(posBitVector == bitArray->getLength() - 1) break;
+
+        if(posElement == BitArray::WORD_SIZE) {
+            posBitVector++;
+            posElement = 0;
+        }
     }
 
     LOG_E("Nodos creados: %i", (int)cantidadNodosContruidos);
-    LOG_E("Bitarray creado");
-    bitArray->toString();
 
     return bitArray->getBitArray();
 }
@@ -78,7 +85,7 @@ extern "C" JNIEXPORT jint JNICALL Java_cl_tiocomegfas_ubb_loudapi_LoudAPI_parent
                 rankSelect->rank0(
                         rankSelect->select1(
                                 rankSelect->rank0(x)))) + 1;
-    } catch (IndexOutOfBoundsException e) {
+    } catch (IndexOutOfBoundsException& e) {
         LOG_E("ERROR: %s",e.getMessage());
     }
 

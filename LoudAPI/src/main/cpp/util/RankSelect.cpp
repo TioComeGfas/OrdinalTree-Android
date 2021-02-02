@@ -18,8 +18,6 @@ RankSelect::RankSelect(JNIEnv* env, BitArray* bitArray, int factor, int size) {
     buildRank();
 
     ones = rank1(length - 1);
-
-    bitArray->toString();
 }
 
 long RankSelect::numberOfOnes() {
@@ -140,7 +138,7 @@ long RankSelect::select1(long i) {
 }
 
 int RankSelect::countBits(long value) {
-    return log2(value) + 1;
+    return (int)log2(value) + 1;
 }
 
 long RankSelect::rank0(long pos) {

@@ -21,13 +21,15 @@ BitArray::BitArray(JNIEnv *env, jlongArray array, jlong size) {
     this->length = (int)(size / WORD_SIZE + 1);
 }
 
-jboolean BitArray::getBit(jint pos) {
+jboolean BitArray::getBit(jint pos, jint element) {
     if(pos < 0) throw IndexOutOfBoundsException(&"pos < 0: "[ pos]);
     if(pos >= length) throw IndexOutOfBoundsException(&"pos >= length():"[ pos]);
 
-    auto valueA = (jlong) this->env->GetObjectArrayElement(reinterpret_cast<jobjectArray>(bits), pos / WORD_SIZE);
-    jlong valueB = (1l << (pos % WORD_SIZE));
-    return (valueA & valueB) != 0;
+    jlong* array = env->GetLongArrayElements(bits, (jboolean*) false);
+
+    auto block = array[pos];
+    jlong blockMask = block & (1l << (WORD_SIZE - element));
+    return (blockMask >> (WORD_SIZE - element)) == 1;
 }
 
 void BitArray::setBit(jint pos) {
@@ -94,16 +96,19 @@ jlong BitArray::size() {
 }
 
 jcharArray BitArray::toString() {
-    jcharArray out = this->env->NewCharArray(length*WORD_SIZE +1);
-    jchar* array = this->env->GetCharArrayElements(out,(jboolean*)false);
+    int size = (int)length;
+    jcharArray out = this->env->NewCharArray(size);
 
-    for (int i = 0; i < (length*WORD_SIZE +1); i++) {
-        array[i] = getBit(i) ? '1' : '0';
+    jlong* array = this->env->GetLongArrayElements(bits,(jboolean*)false);
 
-        if(array[i] == '1') LOG_E("VALOR[%i]= %c",i, array[i]);
+    for (int i = 0; i < length; i++) {
+        for(int j = 0; j < WORD_SIZE; j++){
+            int bit = getBit(i,j);
+            LOG_E("VALOR[%i][%i]= %i",i,j, bit);
+        }
     }
 
-    this->env->SetCharArrayRegion(out,0,length,array);
+    //this->env->SetCharArrayRegion(out,0,length,array);
     return out;
 }
 
@@ -123,4 +128,30 @@ jlongArray BitArray::getBitArray() {
 
 jint BitArray::getRandom(jint min, jint max) {
     return rand() % max + min;
+}
+
+void BitArray::setBit(jint position, jint element) {
+    if(position < 0) {
+        LOG_E("position < 0");
+        throw IndexOutOfBoundsException(&"position < 0: "[ position]);
+    }
+
+    if(position >= length) {
+        LOG_E("position >= length");
+        throw IndexOutOfBoundsException(&"position >= length():"[ position]);
+    }
+
+    if(element >= WORD_SIZE) {
+        LOG_E("element >= WORD_SIZE");
+        throw IndexOutOfBoundsException(&"element >= WORD_SIZE: "[ element]);
+    }
+
+    jlong* array = this->env->GetLongArrayElements(bits, (jboolean *)false);
+    jlong block = (unsigned long)array[position];
+    block |= (1L << (WORD_SIZE - element - 1));
+    array[position] = (unsigned long)block;
+
+    this->env->SetLongArrayRegion(bits,0,length,array);
+
+    //LOG_E("array[%i][%i]= %lu",position,element,(unsigned long)block);
 }
