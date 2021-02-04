@@ -3,6 +3,13 @@
 //
 
 /**
+ * RANK(x) = retorna la cantidad de 1 o 0 hasta la posicion x
+ * SELECT(x) = retorna la posicion donde se encuentra el x 1 o 0
+ * ACCESS(x) = retorna el 1 o 0 que se encuentra en la posicion x
+ */
+
+
+/**
  * Este codigo fue traducido de Java para C++
  * Grupo de investigación ALBA,
  * Proyecto 2030 ...

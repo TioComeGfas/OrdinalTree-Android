@@ -8,13 +8,15 @@
 #include <jni.h>
 
 class BitArray {
-private:
+public:
     static const jint WORD_SIZE = 64;
-    jlong length;
-    JNIEnv* env;
+
+private:
+    jlong length; // cantidad de nodos del arreglo
+    JNIEnv* env; // variable global de java
 
 protected:
-    jlongArray bits = nullptr;
+    jlongArray bits = nullptr; //arreglo de bits
 
 public:
     /**
@@ -35,10 +37,18 @@ public:
      * @param pos
      * @return
      */
-    jboolean getBit(jint pos);
+    jboolean getBit(jint pos, jint element);
+
+    /**
+     *
+     * @param position
+     * @param element
+     */
+    void setBit(jint position, jint element);
 
     /**
      * Pone en 1 el bits de la posición @pos del arreglo
+     * @deprecated
      * @param pos
      */
     void setBit(jint pos);
