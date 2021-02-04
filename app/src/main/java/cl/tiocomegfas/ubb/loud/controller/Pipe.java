@@ -5,7 +5,10 @@ import android.text.TextUtils;
 
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnBuildLoudTreeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnLoadDataListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnSearchPersonListener;
 import cl.tiocomegfas.ubb.loud.backend.threads.BuildLoudTreeThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.LoadDataThread;
@@ -77,6 +80,33 @@ public class Pipe {
         queryJefeThread.
                 setLoudTree(loudTree).
                 setPosition(position).
+                setListener(listener).
+                start();
+    }
+
+    public void callQuerySubordinado(int loudTree, int position, OnQuerySubordinadosListener listener){
+        querySubordinadosThread = QuerySubordinadosThread.getInstance();
+        querySubordinadosThread.
+                setPosition(position).
+                setLoudTree(loudTree).
+                setListener(listener).
+                start();
+    }
+
+    public void callQueryCadenaMando(int loudTree, int position, OnQueryCadenaMandoListener listener){
+        queryCadenaMandoThread = QueryCadenaMandoThread.getInstance();
+        queryCadenaMandoThread.
+                setPosition(position).
+                setLoudTree(loudTree).
+                setListener(listener).
+                start();
+    }
+
+    public void callQueryColegas(int loudTree, int position, OnQueryColegasListener listener){
+        queryColegasThread = QueryColegasThread.getInstance();
+        queryColegasThread.
+                setPosition(position).
+                setLoudTree(loudTree).
                 setListener(listener).
                 start();
     }

@@ -6,7 +6,10 @@ import java.util.LinkedList;
 
 import cl.tiocomegfas.bitarray.LoudsTree;
 import cl.tiocomegfas.chronometer.Chronometer;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 
 public class Manager {
@@ -171,9 +174,8 @@ public class Manager {
      * @param position
      * @return
      */
-    public String[] getSubordinados(int loudTree, int position){
-
-        return null;
+    public void getSubordinados(int loudTree, int position, OnQuerySubordinadosListener listener){
+        Pipe.getInstance().callQuerySubordinado(loudTree,position,listener);
     }
 
     /**
@@ -182,7 +184,7 @@ public class Manager {
      * @param position
      * @return
      */
-    public void getJefe(Context context, int loudTree, int position, OnQueryJefeListener listener){
+    public void getJefe(int loudTree, int position, OnQueryJefeListener listener){
         Pipe.getInstance().callQueryJefe(loudTree,position,listener);
     }
 
@@ -192,8 +194,8 @@ public class Manager {
      * @param position
      * @return
      */
-    public String[] getColegas(int loudTree, int position){
-        return null;
+    public void getColegas(int loudTree, int position, OnQueryColegasListener listener){
+        Pipe.getInstance().callQueryColegas(loudTree,position,listener);
     }
 
     /**
@@ -202,8 +204,8 @@ public class Manager {
      * @param position
      * @return
      */
-    public String[] getCadenaDeMando(int loudTree, int position){
-        return null;
+    public void getCadenaDeMando(int loudTree, int position, OnQueryCadenaMandoListener listener){
+        Pipe.getInstance().callQueryCadenaMando(loudTree, position, listener);
     }
 
     /**
@@ -212,12 +214,10 @@ public class Manager {
      * INVOCARE UN HILO PARA REALIZAR ESTA TAREA, POR LA POSIBILIDAD DE
      * QUE SE DEMORE UN TIEMPO MAYOR A 3 SEGUNDO Y EVITAR QUE ANDROID MATE EL PROCESO.
      * @param loudTree
-     * @param name
-     * @param lastName
      * @return
      */
-    public int searchNodo(int loudTree, String name, String lastName){
-        return 0;
+    public String searchNodo(int loudTree, int position){
+        return getPerson(loudTree,position).toString();
     }
 
     /**

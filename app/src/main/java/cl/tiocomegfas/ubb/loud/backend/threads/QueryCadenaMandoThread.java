@@ -1,6 +1,8 @@
 package cl.tiocomegfas.ubb.loud.backend.threads;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
@@ -26,19 +28,24 @@ public class QueryCadenaMandoThread implements Runnable{
         Manager.getInstance().startChronometer(loudTree); //INICIO DEL CRONOMETRO
 
         LinkedList<Integer> ids = new LinkedList<>();
+        int personID = 0;
 
-        int personID = -1;
-        while(personID != 0){
-            personID = (int) Manager.getInstance().getParent(loudTree,position);
+        ids.add(position);
+        do {
+            personID = (int) Manager.getInstance().getParent(loudTree, position);
             ids.add(personID);
-        }
+            position = personID;
+        } while (personID != 2);
 
         int sizeIDs = ids.size();
         int[] idPersons = new int[sizeIDs];
         String[] names = new String[sizeIDs];
+
+        int iInverted = sizeIDs - 1;
         for(int i = 0; i < sizeIDs; i++){
-            idPersons[i] = ids.get(i);
-            names[i] = Manager.getInstance().getPerson(loudTree,idPersons[i]).toString();
+            idPersons[i] = ids.get(iInverted);
+            names[i] = Manager.getInstance().getPerson(loudTree,idPersons[iInverted]).toString();
+            iInverted--;
         }
 
         double time = Manager.getInstance().stopChronometer(loudTree); //FIN DEL CRONOMETRO

@@ -19,8 +19,8 @@ import de.blox.graphview.GraphView;
 
 public class GraphAdapter extends de.blox.graphview.GraphAdapter<GraphView.ViewHolder> {
 
-    private int[] ids;
-    private String[] names;
+    private final int[] ids;
+    private final String[] names;
 
     public GraphAdapter(@NotNull Graph graph, int[] ids, String[] names) {
         super(graph);

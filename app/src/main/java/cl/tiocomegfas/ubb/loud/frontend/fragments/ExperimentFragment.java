@@ -35,7 +35,10 @@ import cl.tiocomegfas.library.frontend.top_bar.DialogTop;
 import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnBuildLoudTreeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnLoadDataListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 import cl.tiocomegfas.ubb.loud.controller.Pipe;
@@ -80,7 +83,6 @@ public class ExperimentFragment extends Fragment {
     private Context context;
     private HomeActivity activity;
     private Unbinder unbinder;
-    private AlertDialog dialog;
     private int treeSelect;
     private boolean isLoadJson;
 
@@ -159,10 +161,8 @@ public class ExperimentFragment extends Fragment {
         @Override
         public void onReady(int parentID, int childID, String parent, String child, double time) {
             activity.runOnUiThread(() -> {
-
                 Bundle bundle = new Bundle();
-                bundle.putString("MODE", "JEFE");
-                bundle.putInt("TREE", treeSelect);
+                bundle.putString("MODE","JEFE");
                 bundle.putInt("ID_JEFE", parentID);
                 bundle.putInt("ID_CHILD", childID);
                 bundle.putString("NAME_JEFE", parent);
@@ -181,6 +181,79 @@ public class ExperimentFragment extends Fragment {
         public void onRunning() {
             activity.runOnUiThread(() -> {
             });
+        }
+    };
+    private final OnQuerySubordinadosListener listenerQuerySubordinados = new OnQuerySubordinadosListener() {
+        @Override
+        public void onReady(int[] ids, String[] names, double time) {
+            activity.runOnUiThread(() ->{
+                Bundle bundle = new Bundle();
+                bundle.putString("MODE", "SUBORDINADOS");
+                bundle.putIntArray("IDs", ids);
+                bundle.putStringArray("NAMEs", names);
+                bundle.putDouble("TIME",time);
+                showBottomSheetFragment(bundle);
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+            activity.runOnUiThread(() ->{
+
+            });
+        }
+
+        @Override
+        public void onRunning() {
+            activity.runOnUiThread(() ->{
+
+            });
+        }
+    };
+    private final OnQueryCadenaMandoListener listenerQueryCadenaMando = new OnQueryCadenaMandoListener() {
+        @Override
+        public void onReady(int[] ids, String[] persons, double time) {
+            activity.runOnUiThread(() ->{
+                Bundle bundle = new Bundle();
+                bundle.putString("MODE", "CADENA_MANDO");
+                bundle.putIntArray("IDs", ids);
+                bundle.putStringArray("NAMEs", persons);
+                bundle.putDouble("TIME",time);
+                showBottomSheetFragment(bundle);
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onRunning() {
+
+        }
+    };
+    private final OnQueryColegasListener listenerQueryColegas = new OnQueryColegasListener() {
+        @Override
+        public void onReady(int[] colegasID, String[] colegas, double time) {
+            activity.runOnUiThread(() -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("MODE", "COLEGAS");
+                bundle.putIntArray("IDs", colegasID);
+                bundle.putStringArray("NAMEs", colegas);
+                bundle.putDouble("TIME",time);
+                showBottomSheetFragment(bundle);
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onRunning() {
+
         }
     };
 
@@ -244,7 +317,7 @@ public class ExperimentFragment extends Fragment {
         int indexNodo = Parser.toInteger(etSubordinado.getText().toString());
 
         if(!checkValues(indexNodo)) return;
-        String[] request = Manager.getInstance().getSubordinados(treeSelect,indexNodo);
+        Manager.getInstance().getSubordinados(treeSelect,indexNodo, listenerQuerySubordinados);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -257,7 +330,7 @@ public class ExperimentFragment extends Fragment {
         int indexNodo = Parser.toInteger(etJefe.getText().toString());
 
         if(!checkValues(indexNodo)) return;
-        Manager.getInstance().getJefe(context,treeSelect,indexNodo,listenerQueryJefe);
+        Manager.getInstance().getJefe(treeSelect,indexNodo,listenerQueryJefe);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -283,7 +356,7 @@ public class ExperimentFragment extends Fragment {
         int indexNodo = Parser.toInteger(etCadenaMando.getText().toString());
 
         if(!checkValues(indexNodo)) return;
-        String[] request = Manager.getInstance().getCadenaDeMando(treeSelect,indexNodo);
+        Manager.getInstance().getCadenaDeMando(treeSelect,indexNodo, listenerQueryCadenaMando);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -296,7 +369,7 @@ public class ExperimentFragment extends Fragment {
         int indexNodo = Parser.toInteger(etColegas.getText().toString());
 
         if(!checkValues(indexNodo)) return;
-        String[] request = Manager.getInstance().getColegas(treeSelect,indexNodo);
+        Manager.getInstance().getColegas(treeSelect,indexNodo, listenerQueryColegas);
     }
 
     @SuppressLint("NonConstantResourceId")

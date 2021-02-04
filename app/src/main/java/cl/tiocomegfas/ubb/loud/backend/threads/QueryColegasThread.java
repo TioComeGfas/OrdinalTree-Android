@@ -43,13 +43,19 @@ public class QueryColegasThread implements Runnable{
         int fChild = (int) Manager.getInstance().getFirstChild(loudTree,parentID); // obtengo el primer hijo del padre
         int lChild = (int) Manager.getInstance().getSibling(loudTree,fChild); // obtengo el ultimo hijo del padre
 
-        int size = lChild - fChild;
+        int size = lChild - fChild + 1;
         int[] idPersons = new int[size];
         String[] strPersons = new String[size];
-        for(int i = fChild; i <= lChild; i++){
-            Person person = Manager.getInstance().getPerson(loudTree,i);
-            idPersons[i - fChild] = i;
-            strPersons[i - fChild] = person.toString();
+
+        idPersons[0] = parentID;
+        strPersons[0] = Manager.getInstance().getPerson(loudTree,parentID).toString();
+
+        int i = 1;
+        while(fChild != lChild){
+            idPersons[i] = fChild;
+            strPersons[i] = Manager.getInstance().getPerson(loudTree,fChild).toString();
+            fChild++;
+            i++;
         }
 
         double time = Manager.getInstance().stopChronometer(loudTree); //FIN DEL CRONOMETRO

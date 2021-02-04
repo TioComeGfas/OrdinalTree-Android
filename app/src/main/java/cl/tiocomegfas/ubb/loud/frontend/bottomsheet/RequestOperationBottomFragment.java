@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,8 +44,6 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
     @BindView(R.id.graph_view)
     GraphView graphView;
 
-    private HomeActivity activity;
-    private Context context;
     private Unbinder unbinder;
     private Graph graph;
 
@@ -58,8 +59,6 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.context = getContext();
-        this.activity = (HomeActivity) getActivity();
 
         if(getArguments() == null){
             return;
@@ -67,10 +66,10 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
 
         Bundle bundle = getArguments();
         String mode = bundle.getString("MODE");
+        Log.e("TAG", mode);
 
         switch (mode){
             case "JEFE":{
-                int tree = bundle.getInt("TREE");
                 int idJefe = bundle.getInt("ID_JEFE");
                 int idChild = bundle.getInt("ID_CHILD");
                 String nameJefe = bundle.getString("NAME_JEFE");
@@ -100,21 +99,106 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
                 graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
 
                 DecimalFormat df = new DecimalFormat("0.000000");
-                tvTime.setText(df.format(time) + " segundos");
+                String tiempo = "Tiempo de operación: " + df.format(time) + " segundos";
+                tvTime.setText(tiempo);
+                break;
+            }
+            case "SUBORDINADOS":{
+                int[] ids = bundle.getIntArray("IDs");
+                String[] names = bundle.getStringArray("NAMEs");
+                double time = bundle.getDouble("TIME");
+
+                graph = new Graph();
+
+                Node parent = new Node("parent");
+                for(int i = 1; i < ids.length; i++){
+                    graph.addEdge(parent,new Node("child " + i));
+                }
+
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                graphView.setAdapter(adapter);
+
+                final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
+                        .setSiblingSeparation(50)
+                        .setLevelSeparation(50)
+                        .setSubtreeSeparation(100)
+                        .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
+                        .build();
+                graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+
+                DecimalFormat df = new DecimalFormat("0.000000");
+                String tiempo = "Tiempo de operación: " + df.format(time) + " segundos";
+                tvTime.setText(tiempo);
 
                 break;
-            } default:
+            }
+            case "CADENA_MANDO":{
+                int[] ids = bundle.getIntArray("IDs");
+                String[] names = bundle.getStringArray("NAMEs");
+                double time = bundle.getDouble("TIME");
+
+                graph = new Graph();
+
+                Node parent = new Node("parent 0");
+                for(int i = 1; i < ids.length; i++){
+                    Node child = new Node("child " + i);
+                    graph.addEdge(parent,child);
+
+                    parent = child;
+                }
+
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                graphView.setAdapter(adapter);
+
+                final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
+                        .setSiblingSeparation(50)
+                        .setLevelSeparation(50)
+                        .setSubtreeSeparation(100)
+                        .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
+                        .build();
+                graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+
+                DecimalFormat df = new DecimalFormat("0.000000");
+                String tiempo = "Tiempo de operación: " + df.format(time) + " segundos";
+                tvTime.setText(tiempo);
+
+                break;
+            }
+            case "COLEGAS":{
+                int[] ids = bundle.getIntArray("IDs");
+                String[] names = bundle.getStringArray("NAMEs");
+                double time = bundle.getDouble("TIME");
+
+                graph = new Graph();
+
+                Node parent = new Node("root");
+
+                for(int i = 1; i < ids.length; i++){
+                    Node child = new Node("child " + i);
+                    graph.addEdge(parent,child);
+                }
+
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                graphView.setAdapter(adapter);
+
+                final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
+                        .setSiblingSeparation(50)
+                        .setLevelSeparation(50)
+                        .setSubtreeSeparation(100)
+                        .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
+                        .build();
+                graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+
+                DecimalFormat df = new DecimalFormat("0.000000");
+                String tiempo = "Tiempo de operación: " + df.format(time) + " segundos";
+                tvTime.setText(tiempo);
+
+                break;
+            }
+            default:
                 break;
         }
-
-
-
-
-
-
     }
-
-
 
     @Override
     public void onDestroy() {

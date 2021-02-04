@@ -1,5 +1,9 @@
 package cl.tiocomegfas.ubb.loud.backend.threads;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 
@@ -22,16 +26,22 @@ public class QuerySubordinadosThread implements Runnable {
         listener.onRunning();
 
         Manager.getInstance().startChronometer(loudTree);
-
         int fChild = (int) Manager.getInstance().getFirstChild(loudTree, position);
         int lChild = (int) Manager.getInstance().getSibling(loudTree, fChild);
 
-        int size = lChild - fChild;
+        int size = lChild - fChild + 1;
         int[] ids = new int[size];
         String[] names = new String[size];
-        for(int i = fChild; i <= lChild; i++){
-            ids[i - fChild] = i;
-            names[i - fChild] = Manager.getInstance().getPerson(loudTree,i).toString();
+
+        ids[0] = position;
+        names[0] = Manager.getInstance().getPerson(loudTree,position).toString();
+
+        int i = 1;
+        while(fChild != lChild){
+            ids[i] = fChild;
+            names[i] = Manager.getInstance().getPerson(loudTree,fChild).toString();
+            fChild++;
+            i++;
         }
 
         double time = Manager.getInstance().stopChronometer(loudTree);
