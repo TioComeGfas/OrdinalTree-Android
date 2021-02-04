@@ -19,11 +19,13 @@ import de.blox.graphview.GraphView;
 
 public class GraphAdapter extends de.blox.graphview.GraphAdapter<GraphView.ViewHolder> {
 
-    private Person[] persons;
+    private int[] ids;
+    private String[] names;
 
-    public GraphAdapter(@NotNull Graph graph, Person[] persons) {
+    public GraphAdapter(@NotNull Graph graph, int[] ids, String[] names) {
         super(graph);
-        this.persons = persons;
+        this.ids = ids;
+        this.names = names;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class GraphAdapter extends de.blox.graphview.GraphAdapter<GraphView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull GraphView.ViewHolder viewHolder, @NotNull Object o, int i) {
-        ((SimpleViewHolder) viewHolder).bind(persons[i].getId(), persons[i].getName().concat(" ").concat(persons[i].getLastName()));
+        ((SimpleViewHolder) viewHolder).bind(ids[i], names[i]);
     }
 
     static class SimpleViewHolder extends GraphView.ViewHolder{

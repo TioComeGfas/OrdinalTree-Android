@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -32,6 +34,9 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
 
     @BindView(R.id.tv_title_request)
     TextView tvTtileRequest;
+
+    @BindView(R.id.tv_time)
+    TextView tvTime;
 
     @BindView(R.id.graph_view)
     GraphView graphView;
@@ -67,18 +72,23 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
             case "JEFE":{
                 int tree = bundle.getInt("TREE");
                 int idJefe = bundle.getInt("ID_JEFE");
-                int idDefault = bundle.getInt("ID_DEFAULT");
-                String jefe = bundle.getString("PERSON_JEFE");
-                String _default = bundle.getString("PERSON_DEFAULT");
+                int idChild = bundle.getInt("ID_CHILD");
+                String nameJefe = bundle.getString("NAME_JEFE");
+                String nameChild = bundle.getString("NAME_CHILD");
+                double time = bundle.getDouble("TIME");
+
+                String[] names = new String[2];
+                names[0] = nameJefe;
+                names[1] = nameChild;
 
                 graph = new Graph();
 
                 Node parent = new Node("Jefe");
-                Node child = new Node("Default");
+                Node child = new Node("Child");
 
                 graph.addEdge(parent,child);
 
-                GraphAdapter adapter = new GraphAdapter(graph, Manager.getInstance().getPersons(tree,idJefe,idDefault));
+                GraphAdapter adapter = new GraphAdapter(graph, new int[] {idJefe, idChild}, names);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -88,6 +98,9 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
                         .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
                         .build();
                 graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+
+                DecimalFormat df = new DecimalFormat("0.000000");
+                tvTime.setText(df.format(time) + " segundos");
 
                 break;
             } default:

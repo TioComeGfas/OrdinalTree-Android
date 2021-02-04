@@ -1,14 +1,11 @@
 package cl.tiocomegfas.ubb.loud.backend.threads;
 
-import android.content.Context;
-
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnBuildLoudTreeListener;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 
 public class BuildLoudTreeThread implements Runnable{
 
     private static final BuildLoudTreeThread INSTANCE = new BuildLoudTreeThread();
-    private Context context;
     private Thread thread;
     private int loudTree;
     private OnBuildLoudTreeListener listener;
@@ -41,11 +38,6 @@ public class BuildLoudTreeThread implements Runnable{
 
     public BuildLoudTreeThread setLoudTree(int loudTree) {
         this.loudTree = loudTree;
-        return this;
-    }
-
-    public BuildLoudTreeThread setContext(Context context) {
-        this.context = context;
         return this;
     }
 

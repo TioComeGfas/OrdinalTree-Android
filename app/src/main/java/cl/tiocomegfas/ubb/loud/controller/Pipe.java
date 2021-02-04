@@ -47,8 +47,7 @@ public class Pipe {
                 start();
     }
 
-    public void callSearchPerson(Context context, String[] persons, String personSearch, OnSearchPersonListener listener){
-        if(context == null) throw new IllegalArgumentException("El contexto es invalido");
+    public void callSearchPerson( String[] persons, String personSearch, OnSearchPersonListener listener){
         if(persons == null || persons.length == 0) throw new IllegalArgumentException("persons is invalid or empty");
         if(TextUtils.isEmpty(personSearch)) throw new IllegalArgumentException("personSearch is invalid");
         if(listener == null) throw new IllegalArgumentException("El listener es invalido");
@@ -61,24 +60,21 @@ public class Pipe {
                 start();
     }
 
-    public void callBuildLoud(Context context, int loudTree, OnBuildLoudTreeListener listener){
-        if(context == null) throw new IllegalArgumentException("El contexto es invalido");
+    public void callBuildLoud(int loudTree, OnBuildLoudTreeListener listener){
         if(loudTree != Manager.LOUD_TREE_1 && loudTree != Manager.LOUD_TREE_2 && loudTree != Manager.LOUD_TREE_3) throw new IllegalArgumentException("El loudTree es invalido");
         if(listener == null) throw new IllegalArgumentException("El listener es invalido");
 
         buildLoudTreeThread = BuildLoudTreeThread.getInstance();
 
         buildLoudTreeThread.
-                setContext(context).
                 setLoudTree(loudTree).
                 setListener(listener).
                 start();
     }
 
-    public void callQueryJefe(Context context, int loudTree, int position, OnQueryJefeListener listener){
+    public void callQueryJefe(int loudTree, int position, OnQueryJefeListener listener){
         queryJefeThread = QueryJefeThread.getInstance();
         queryJefeThread.
-                setContext(context).
                 setLoudTree(loudTree).
                 setPosition(position).
                 setListener(listener).

@@ -65,9 +65,8 @@ public class OrganigramaFragment extends Fragment {
                 new Person.Builder().setId(1).setName("Fredy").setLastName("Moncada").setSex(Sex.MALE).build(),
                 new Person.Builder().setId(2).setName("Alan").setLastName("Moreno").setSex(Sex.MALE).build(),
                 new Person.Builder().setId(3).setName("Camila").setLastName("Martines").setSex(Sex.FEMALE).build()
-
         };
-        GraphAdapter adapter = new GraphAdapter(graph, personasArray);
+        GraphAdapter adapter = null;
         graphView.setAdapter(adapter);
 
         final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()

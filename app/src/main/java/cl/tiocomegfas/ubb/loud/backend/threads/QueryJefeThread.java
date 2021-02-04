@@ -1,15 +1,12 @@
 package cl.tiocomegfas.ubb.loud.backend.threads;
 
-import android.content.Context;
-import android.text.TextUtils;
-
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
+import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 
 public class QueryJefeThread implements Runnable{
 
     private static final QueryJefeThread INSTANCE = new QueryJefeThread();
-    private Context context;
     private Thread thread;
     private int loudTree;
     private int position;
@@ -24,14 +21,17 @@ public class QueryJefeThread implements Runnable{
     @Override
     public void run() {
         listener.onRunning();
-        String personStr = Manager.getInstance().getParent(loudTree, position);
 
-        if(TextUtils.isEmpty(personStr)){
-            listener.onError("No fue posible obtener el jefe");
-            return;
-        }
+        Manager.getInstance().startChronometer(loudTree);
 
-        listener.onReady(personStr,position);
+        int parentID = (int) Manager.getInstance().getParent(loudTree, position);
+
+        Person parent = Manager.getInstance().getPerson(loudTree,parentID);
+        Person child = Manager.getInstance().getPerson(loudTree,position);
+
+        double time = Manager.getInstance().stopChronometer(loudTree);
+
+        listener.onReady(parentID,position,parent.toString(), child.toString(), time);
     }
 
     public QueryJefeThread setLoudTree(int loudTree) {
@@ -41,11 +41,6 @@ public class QueryJefeThread implements Runnable{
 
     public QueryJefeThread setPosition(int position) {
         this.position = position;
-        return this;
-    }
-
-    public QueryJefeThread setContext(Context context) {
-        this.context = context;
         return this;
     }
 

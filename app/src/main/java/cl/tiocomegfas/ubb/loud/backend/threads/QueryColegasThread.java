@@ -18,13 +18,11 @@ import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 
-
 public class QueryColegasThread implements Runnable{
 
     private final int REQUEST_FIN = 0;
 
     private static final QueryColegasThread INSTANCE = new QueryColegasThread();
-    private Context context;
     private Thread thread;
     private int loudTree;
     private int position;
@@ -39,69 +37,24 @@ public class QueryColegasThread implements Runnable{
     @Override
     public void run() {
         listener.onRunning();
+        Manager.getInstance().startChronometer(loudTree); //INICIO DEL CRONOMETRO
 
-        //INICIO DEL CRONOMETRO
-        Manager.getInstance().startChronometer(loudTree);
+        int parentID = (int) Manager.getInstance().getParent(loudTree, position); //obtengo el padre
+        int fChild = (int) Manager.getInstance().getFirstChild(loudTree,parentID); // obtengo el primer hijo del padre
+        int lChild = (int) Manager.getInstance().getSibling(loudTree,fChild); // obtengo el ultimo hijo del padre
 
-        //OBTENER EL PADRE
-        String padreStr = Manager.getInstance().getParent(loudTree,position);
-        int idPadre = Parser.toInteger(padreStr.split("_")[0]);
-
-        //para guardar todos los hermanos del padre
-        LinkedList<Integer> padres = new LinkedList<>();
-        padres.add(idPadre);
-        int sizePadres = 1;
-
-        while(true){
-            int idHermano = Parser.toInteger(Manager.getInstance().getNextSibling(loudTree,idPadre).split("_")[0]);
-
-            /**
-             * RECORDAR VALIDAR CAMBIAR ESTE VALOR!!!
-             */
-            if(idHermano == REQUEST_FIN) break;
-
-            padres.add(idHermano);
-            sizePadres++;
+        int size = lChild - fChild;
+        int[] idPersons = new int[size];
+        String[] strPersons = new String[size];
+        for(int i = fChild; i <= lChild; i++){
+            Person person = Manager.getInstance().getPerson(loudTree,i);
+            idPersons[i - fChild] = i;
+            strPersons[i - fChild] = person.toString();
         }
 
-        //UNA VEZ OBTENIDO LOS HERMANOS DEL PADRE, HAY QUE BUSCAR TODOS LOS HIJOS QUE POSEEAN ESTOS PADRES
-        LinkedList<Integer[]> idHijos = new LinkedList<>();
+        double time = Manager.getInstance().stopChronometer(loudTree); //FIN DEL CRONOMETRO
 
-        //recorremos la lista con los hermanos del padre
-        for(int i = 0; i < sizePadres; i++){
-            int padre = padres.get(i);
-
-            LinkedList<Integer> hijosTmp = new LinkedList<>();
-            Integer[] hijos;
-
-            int hijo = Parser.toInteger(Manager.getInstance().getFirstChild(loudTree,padre).split("_")[0]);
-
-            // si es un hijo continuar
-            if(hijo != REQUEST_FIN){
-                hijosTmp.add(hijo);
-
-                while(true){
-                    hijo = Parser.toInteger(Manager.getInstance().getNextSibling(loudTree,hijo).split("_")[0]);
-
-                    if(hijo == REQUEST_FIN) break;
-
-                    hijosTmp.add(hijo);
-                }
-            }
-
-            hijos = (Integer[]) hijosTmp.toArray();
-            idHijos.add(hijos);
-        }
-
-        //FIN DEL CRONOMETRO
-        double time = Manager.getInstance().stopChronometer(loudTree);
-
-        listener.onReady(time, padres, idHijos);
-    }
-
-    public QueryColegasThread setContext(Context context) {
-        this.context = context;
-        return this;
+        listener.onReady(idPersons,strPersons,time);
     }
 
     public QueryColegasThread setLoudTree(int loudTree) {

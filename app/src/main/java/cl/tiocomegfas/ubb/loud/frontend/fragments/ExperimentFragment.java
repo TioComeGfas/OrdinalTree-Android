@@ -123,7 +123,7 @@ public class ExperimentFragment extends Fragment {
                     Pipe.getInstance().callLoadJson(context,10000,listenerLoadData);
 
                     //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_1,listenerBuildLoudTree);
+                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_1,listenerBuildLoudTree);
                     return;
                 }else if(size == 10000){
                     //Almacenamiento de las personas generadas
@@ -134,7 +134,7 @@ public class ExperimentFragment extends Fragment {
 
 
                     //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_2,listenerBuildLoudTree);
+                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_2,listenerBuildLoudTree);
                     return;
                 }else if(size == 100000){
                     //Almacenamiento de las personas generadas
@@ -143,7 +143,7 @@ public class ExperimentFragment extends Fragment {
                     tv100000nodes.setText(getResources().getText(R.string.text_cargado));
 
                     //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(context,Manager.LOUD_TREE_3,listenerBuildLoudTree);
+                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_3,listenerBuildLoudTree);
                 }
                 DialogTop.show(activity,"Información generada correctamente!!", DialogTop.SUCCESS);
                 isLoadJson = true;
@@ -157,42 +157,29 @@ public class ExperimentFragment extends Fragment {
     };
     private final OnQueryJefeListener listenerQueryJefe = new OnQueryJefeListener() {
         @Override
-        public void onReady(String request, int ID) {
+        public void onReady(int parentID, int childID, String parent, String child, double time) {
             activity.runOnUiThread(() -> {
-                dialog.cancel();
-                String[] values = request.split("_");
-
-                //este es el jefe
-                int id = Parser.toInteger(values[0]);
-                String person = values[1];
-
-                //este es el nodo que el jefe busco
-                String personDefault = Manager.getInstance().getPersonString(treeSelect,-1);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("MODE","JEFE");
-                bundle.putInt("ID_JEFE", id);
-                bundle.putInt("ID_DEFAULT", -1);
-                bundle.putString("PERSON_JEFE",person);
-                bundle.putString("PERSON_DEFAULT", personDefault);
-                bundle.putInt("TREE",treeSelect);
-
+                bundle.putString("MODE", "JEFE");
+                bundle.putInt("TREE", treeSelect);
+                bundle.putInt("ID_JEFE", parentID);
+                bundle.putInt("ID_CHILD", childID);
+                bundle.putString("NAME_JEFE", parent);
+                bundle.putString("NAME_CHILD", child);
+                bundle.putDouble("TIME",time);
                 showBottomSheetFragment(bundle);
             });
         }
 
         @Override
         public void onError(String message) {
-            dialog.cancel();
+            //dialog.cancel();
         }
 
         @Override
         public void onRunning() {
             activity.runOnUiThread(() -> {
-                ExperimentFragment.this.dialog = LoadingDialog.show(context);
-                dialog.setMessage("Realizando la consulta");
-                dialog.setCancelable(false);
-                dialog.show();
             });
         }
     };

@@ -4,14 +4,12 @@ import android.content.Context;
 
 import java.util.LinkedList;
 
-import cl.tiocomegfas.library.backend.parser.Parser;
-import cl.tiocomegfas.ubb.cronometer.CronometerAPI;
+import cl.tiocomegfas.bitarray.LoudsTree;
+import cl.tiocomegfas.chronometer.Chronometer;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
-import cl.tiocomegfas.ubb.loudapi.LoudAPI;
 
 public class Manager {
-
     public static final int LOUD_TREE_1 = 1;
     public static final int LOUD_TREE_2 = 2;
     public static final int LOUD_TREE_3 = 3;
@@ -20,12 +18,12 @@ public class Manager {
     private LinkedList<Person> persons1;
     private LinkedList<Person> persons2;
     private LinkedList<Person> persons3;
-    private CronometerAPI chronometerTree1;
-    private CronometerAPI chronometerTree2;
-    private CronometerAPI chronometerTree3;
-    private LoudAPI loudTree1;
-    private LoudAPI loudTree2;
-    private LoudAPI loudTree3;
+    private Chronometer chronometerTree1;
+    private Chronometer chronometerTree2;
+    private Chronometer chronometerTree3;
+    private LoudsTree loudTree1;
+    private LoudsTree loudTree2;
+    private LoudsTree loudTree3;
 
     private Manager(){
 
@@ -103,17 +101,15 @@ public class Manager {
 
     public void startChronometer(int loudTree){
         if(loudTree == LOUD_TREE_1){
-            if(chronometerTree1 == null) chronometerTree1 = CronometerAPI.getInstance();
-            chronometerTree1.startClock(chronometerTree1);
+            if(chronometerTree1 == null) chronometerTree1 = Chronometer.getInstance();
+            Chronometer.startClock(chronometerTree1);
         }else if(loudTree == LOUD_TREE_2){
-            if(chronometerTree2 == null) chronometerTree2 = CronometerAPI.getInstance();
-            chronometerTree2.startClock(chronometerTree2);
+            if(chronometerTree2 == null) chronometerTree2 = Chronometer.getInstance();
+            Chronometer.startClock(chronometerTree2);
         }else if(loudTree == LOUD_TREE_3){
-            if(chronometerTree3 == null) chronometerTree3 = CronometerAPI.getInstance();
-            chronometerTree3.startClock(chronometerTree3);
-        }
-
-        throw new IllegalStateException("loudTree invalido");
+            if(chronometerTree3 == null) chronometerTree3 = Chronometer.getInstance();
+            Chronometer.startClock(chronometerTree3);
+        }else throw new IllegalStateException("loudTree invalido");
     }
 
     public double stopChronometer(int loudTree){
@@ -138,21 +134,35 @@ public class Manager {
     }
 
     public void buildLoudTree(int loudTree, int countNodes){
-        if(loudTree == LOUD_TREE_1){
-            if(loudTree1 == null) loudTree1 = new LoudAPI(countNodes);
-            loudTree1.setBitArray(loudTree1.init(countNodes));
-            return;
-        }else if(loudTree == LOUD_TREE_2){
-            if(loudTree2 == null) loudTree2 = new LoudAPI(countNodes);
-            loudTree2.setBitArray(loudTree2.init(countNodes));
-            return;
-        }else if(loudTree == LOUD_TREE_3){
-            if(loudTree3 == null) loudTree3 = new LoudAPI(countNodes);
-            loudTree3.setBitArray(loudTree3.init(countNodes));
-            return;
+        switch (loudTree){
+            case LOUD_TREE_1:{
+                loudTree1 = new LoudsTree(countNodes);
+                break;
+            } case LOUD_TREE_2:{
+                loudTree2 = new LoudsTree(countNodes);
+                break;
+            } case LOUD_TREE_3:{
+                loudTree3 = new LoudsTree(countNodes);
+                break;
+            } default:{
+                throw new IllegalStateException("loudTree invalido");
+            }
         }
+    }
 
-        throw new IllegalStateException("loudTree invalido");
+    public long getParent(int loudTree, int position){
+        LoudsTree loud = getTree(loudTree);
+        return loud.parent(position);
+    }
+
+    public long getFirstChild(int loudTree, int position){
+        LoudsTree loud = getTree(loudTree);
+        return loud.firstChild(position);
+    }
+
+    public long getSibling(int loudTree, int position){
+        LoudsTree loud = getTree(loudTree);
+        return loud.nextSibling(position);
     }
 
     /**
@@ -173,7 +183,7 @@ public class Manager {
      * @return
      */
     public void getJefe(Context context, int loudTree, int position, OnQueryJefeListener listener){
-        Pipe.getInstance().callQueryJefe(context,loudTree,position,listener);
+        Pipe.getInstance().callQueryJefe(loudTree,position,listener);
     }
 
     /**
@@ -216,69 +226,21 @@ public class Manager {
      * @return
      */
     public String printTree(int loudTree){
-        return null;
+        LoudsTree loud = getTree(loudTree);
+        return loud.printAll();
     }
 
-    public String getFirstChild(int loudTree, int position){
-        if(loudTree <= 0 || loudTree > 3) throw new IllegalArgumentException("loudTree > 0 && loudTree < 4");
-
-        if(loudTree == LOUD_TREE_1){
-            int pos = loudTree1.firstChild(loudTree1.getBitArray(), (int)loudTree1.getLength(),position);
-            return loudTree1.data(pos);
-        }else if(loudTree == LOUD_TREE_2){
-            int pos = loudTree2.firstChild(loudTree1.getBitArray(), (int)loudTree2.getLength(),position);
-            return loudTree2.data(pos);
-        }else{
-            int pos = loudTree3.firstChild(loudTree3.getBitArray(), (int)loudTree3.getLength(),position);
-            return loudTree3.data(pos);
-        }
-    }
-
-    public String getNextSibling(int loudTree, int position){
-        if(loudTree <= 0 || loudTree > 3) throw new IllegalArgumentException("loudTree > 0 && loudTree < 4");
-
-        if(loudTree == LOUD_TREE_1){
-            int pos = loudTree1.nextSibling(loudTree1.getBitArray(), (int)loudTree1.getLength(),position);
-            return Parser.toString(pos).concat("_").concat(loudTree1.data(pos));
-
-        }else if(loudTree == LOUD_TREE_2){
-            int pos = loudTree2.nextSibling(loudTree1.getBitArray(), (int)loudTree2.getLength(),position);
-            return Parser.toString(pos).concat("_").concat(loudTree2.data(pos));
-
-        }else{
-            int pos = loudTree3.nextSibling(loudTree3.getBitArray(), (int)loudTree3.getLength(),position);
-            return Parser.toString(pos).concat("_").concat(loudTree3.data(pos));
-        }
-    }
-
-    public String getParent(int loudTree, int position){
-        if(loudTree <= 0 || loudTree > 3) throw new IllegalArgumentException("loudTree > 0 && loudTree < 4");
-
-        if(loudTree == LOUD_TREE_1){
-            int pos = loudTree1.parent(loudTree1.getBitArray(), (int)loudTree1.getLength(), position);
-            return Parser.toString(pos).concat("_").concat(loudTree1.data(pos));
-
-        }else if(loudTree == LOUD_TREE_2){
-            int pos = loudTree2.parent(loudTree1.getBitArray(), (int)loudTree2.getLength(), position);
-            return Parser.toString(pos).concat("_").concat(loudTree2.data(pos));
-        }else{
-            int pos = loudTree3.parent(loudTree3.getBitArray(), (int)loudTree3.getLength(), position);
-            return Parser.toString(pos).concat("_").concat(loudTree3.data(pos));
-        }
-    }
-
-    public String getChild(int loudTree, int position, int indexChild){
-        if(loudTree <= 0 || loudTree > 3) throw new IllegalArgumentException("loudTree > 0 && loudTree < 4");
-
-        if(loudTree == LOUD_TREE_1){
-            int pos = loudTree1.child(loudTree1.getBitArray(), (int)loudTree1.getLength(),position, indexChild);
-            return loudTree1.data(pos);
-        }else if(loudTree == LOUD_TREE_2){
-            int pos = loudTree2.child(loudTree1.getBitArray(), (int)loudTree2.getLength(),position, indexChild);
-            return loudTree2.data(pos);
-        }else{
-            int pos = loudTree3.child(loudTree3.getBitArray(), (int)loudTree3.getLength(),position, indexChild);
-            return loudTree3.data(pos);
+    private LoudsTree getTree(int loudTree){
+        switch (loudTree){
+            case LOUD_TREE_1:{
+                return loudTree1;
+            } case LOUD_TREE_2:{
+                return loudTree2;
+            } case LOUD_TREE_3:{
+                return loudTree3;
+            } default:{
+                throw new IllegalStateException("loudTree invalido");
+            }
         }
     }
 
