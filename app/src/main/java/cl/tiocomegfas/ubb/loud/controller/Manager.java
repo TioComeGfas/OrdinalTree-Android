@@ -216,8 +216,8 @@ public class Manager {
      * @param loudTree
      * @return
      */
-    public String searchNodo(int loudTree, int position){
-        return getPerson(loudTree,position).toString();
+    public int searchNodo(int loudTree, String name, String lastname){
+        return 0;
     }
 
     /**
