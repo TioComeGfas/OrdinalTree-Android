@@ -39,6 +39,8 @@ public class SplashActivity extends AppCompatActivity {
                     // llamar una vez cargado
                     Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                     startActivity(intent);
+
+                    finish();
                 }
             });
         }
