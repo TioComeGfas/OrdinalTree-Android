@@ -15,15 +15,18 @@ import android.widget.TextView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cl.tiocomegfas.library.frontend.top_bar.DialogTop;
 import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.constants.Sex;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 import cl.tiocomegfas.ubb.loud.frontend.adapter.GraphAdapter;
+import cl.tiocomegfas.ubb.loud.frontend.listeners.OnGraphAdapterListener;
 import de.blox.graphview.Graph;
 import de.blox.graphview.GraphView;
 import de.blox.graphview.Node;
@@ -38,6 +41,18 @@ public class OrganigramaFragment extends Fragment {
 
     private Unbinder unbinder;
     private Graph graph;
+    private int loudTree = Manager.LOUD_TREE_1;
+
+    private final OnGraphAdapterListener listenerGraph = (id,x,y) -> getActivity().runOnUiThread(() -> {
+        int fChild = (int)Manager.getInstance().getFirstChild(loudTree,id);
+        if(fChild == -1){
+            DialogTop.show(getActivity(),"No tiene mas hijos",DialogTop.INFORMATION);
+            return;
+        }
+
+        int lChild = (int)Manager.getInstance().getSibling(loudTree,fChild);
+        updateGraph(fChild,lChild,x,y);
+    });
 
     public OrganigramaFragment() { }
 
@@ -51,22 +66,17 @@ public class OrganigramaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         graph = new Graph();
 
-        final Node node1 = new Node("Parent");
-        final Node node2 = new Node("Child 1");
-        final Node node3 = new Node("Child 2");
+        final Node node1 = new Node("false root");
+        final Node node2 = new Node("root");
+
+        int[] ids = new int[] {0,2};
+        String[] names = new String[]{Manager.getInstance().getPersonString(loudTree,0), Manager.getInstance().getPersonString(loudTree,2)};
 
         graph.addEdge(node1, node2);
-        graph.addEdge(node1, node3);
 
-        Person[] personasArray = new Person[]{
-                new Person.Builder().setId(1).setName("Fredy").setLastName("Moncada").setSex(Sex.MALE).build(),
-                new Person.Builder().setId(2).setName("Alan").setLastName("Moreno").setSex(Sex.MALE).build(),
-                new Person.Builder().setId(3).setName("Camila").setLastName("Martines").setSex(Sex.FEMALE).build()
-        };
-        GraphAdapter adapter = null;
+        GraphAdapter adapter = new GraphAdapter(graph,ids,names, listenerGraph);
         graphView.setAdapter(adapter);
 
         final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -76,7 +86,37 @@ public class OrganigramaFragment extends Fragment {
                 .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
                 .build();
         graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+    }
 
+    private void updateGraph(int fChild, int lChild, float _x, float _y){
+        List<Node> nodos = graph.getNodes();
+
+        for(final Node nodo: nodos){
+            float x = nodo.getX();
+            float y = nodo.getY();
+
+            if(_x == x && _y == y){
+                int size = lChild - fChild;
+                int[] ids = new int[size];
+                String[] names = new String[size];
+
+                for(int i = 0; i < size; i++){
+
+                    ids[i] = fChild;
+                    names[i] = Manager.getInstance().getPersonString(loudTree,fChild);
+                    fChild++;
+
+                    final Node aux = new Node("child"+x+","+y+": "+i);
+                    graphView.getAdapter().getGraph().addEdge(nodo,aux);
+                }
+
+                ((GraphAdapter) graphView.getAdapter()).updateData(ids,names);
+                ((GraphAdapter) graphView.getAdapter()).notifyDataSetChanged();
+
+                //actualizar la informacion del adaptador
+                return;
+            }
+        }
     }
 
     @Override

@@ -60,18 +60,6 @@ import de.blox.graphview.Node;
 public class ExperimentFragment extends Fragment {
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.tv_1000_nodes_state)
-    TextView tv1000nodes;
-
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.tv_10000_nodes_state)
-    TextView tv10000nodes;
-
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.tv_100000_nodes_state)
-    TextView tv100000nodes;
-
-    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.et_subordinado)
     EditText etSubordinado;
 
@@ -106,79 +94,7 @@ public class ExperimentFragment extends Fragment {
     private boolean isLoadJson;
     private final double[][] data = new double[TableViewModel.ROW_SIZE][TableViewModel.COLUMN_SIZE]; //crear datos ficticios
 
-    private final OnBuildLoudTreeListener listenerBuildLoudTree = new OnBuildLoudTreeListener() {
-        @Override
-        public void onRunning() {
 
-        }
-
-        @Override
-        public void onReady(int loudTree) {
-            activity.runOnUiThread(() -> {
-                if(loudTree == Manager.LOUD_TREE_1) tv1000nodes.setText(getResources().getText(R.string.text_generado));
-                else if(loudTree == Manager.LOUD_TREE_2) tv10000nodes.setText(getResources().getText(R.string.text_generado));
-                else tv100000nodes.setText(getResources().getText(R.string.text_generado));
-            });
-        }
-
-        @Override
-        public void onError(String message) {
-            activity.runOnUiThread(() -> DialogTop.show(activity,"Ocurrio un problema",message, DialogTop.ERROR));
-        }
-    };
-    private final OnLoadDataListener listenerLoadData = new OnLoadDataListener() {
-        @Override
-        public void onRunning() {
-            //activity.runOnUiThread(() -> DialogTop.show(activity,"Generando información", DialogTop.SUCCESS));
-        }
-
-        @Override
-        public void onReady(LinkedList<Person> persons) {
-            activity.runOnUiThread(() -> {
-                Log.e("TAG",persons.size()+"");
-                int size = persons.size();
-                if(size == 1000){
-                    //Almacenamiento de las personas generadas
-                    Manager.getInstance().setPersons(Manager.LOUD_TREE_1,persons);
-                    tv1000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
-                    tv1000nodes.setText(getResources().getText(R.string.text_cargado));
-                    Pipe.getInstance().callLoadJson(context,10000,listenerLoadData);
-
-                    //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_1,listenerBuildLoudTree);
-                    return;
-                }else if(size == 10000){
-                    //Almacenamiento de las personas generadas
-                    Manager.getInstance().setPersons(Manager.LOUD_TREE_2,persons);
-                    tv10000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
-                    tv10000nodes.setText(getResources().getText(R.string.text_cargado));
-                    Pipe.getInstance().callLoadJson(context,100000,listenerLoadData);
-
-
-                    //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_2,listenerBuildLoudTree);
-                    return;
-                }else if(size == 100000){
-                    //Almacenamiento de las personas generadas
-                    Manager.getInstance().setPersons(Manager.LOUD_TREE_3,persons);
-                    tv100000nodes.setTextColor(getResources().getColor(R.color.md_green_500));
-                    tv100000nodes.setText(getResources().getText(R.string.text_cargado));
-
-                    //Creacion del arbol con las personas cargadas
-                    Pipe.getInstance().callBuildLoud(Manager.LOUD_TREE_3,listenerBuildLoudTree);
-                }
-                DialogTop.show(activity,"Información generada correctamente!!", DialogTop.SUCCESS);
-                isLoadJson = true;
-
-                Pipe.getInstance().callTableViewGenerateData(listenerGenerateDataListener);
-            });
-        }
-
-        @Override
-        public void onError(String message) {
-            activity.runOnUiThread(() -> DialogTop.show(activity,"Ocurrio un problema",message, DialogTop.ERROR));
-        }
-    };
     private final OnQueryJefeListener listenerQueryJefe = new OnQueryJefeListener() {
         @Override
         public void onReady(int parentID, int childID, String parent, String child, double time) {
@@ -372,23 +288,8 @@ public class ExperimentFragment extends Fragment {
         this.context = getContext();
         this.activity = (HomeActivity) getActivity();
 
-        tv1000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
-        tv10000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
-        tv100000nodes.setTextColor(getResources().getColor(R.color.md_red_500));
-
         this.treeSelect = -1;
-        this.isLoadJson = false;
         rb1.setChecked(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(isLoadJson){
-            tv1000nodes.setText(getResources().getText(R.string.text_generado));
-            tv10000nodes.setText(getResources().getText(R.string.text_generado));
-            tv100000nodes.setText(getResources().getText(R.string.text_generado));
-        }
     }
 
     @Override
@@ -398,14 +299,9 @@ public class ExperimentFragment extends Fragment {
     }
 
     @SuppressLint("NonConstantResourceId")
-    @OnClick(R.id.bt_load_json)
+    @OnClick(R.id.bt_start_test)
     void onClickLoadJson(){
-        if(isLoadJson) {
-            DialogTop.show(activity,"Ya se encuentra cargada la información en el sistema",DialogTop.INFORMATION);
-            return;
-        }
-
-        Pipe.getInstance().callLoadJson(context,1000,listenerLoadData);
+        Pipe.getInstance().callTableViewGenerateData(listenerGenerateDataListener);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -514,10 +410,6 @@ public class ExperimentFragment extends Fragment {
     }
 
     private boolean checkValues(int indexNodo){
-        if(!isLoadJson) {
-            DialogTop.show(activity,"Antes de continuar, genere los arboles",DialogTop.PRECAUTION);
-            return false;
-        }
 
         if(treeSelect == -1){
             DialogTop.show(activity,"Antes de continuar, seleccione el arbol",DialogTop.PRECAUTION);

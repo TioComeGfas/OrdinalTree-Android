@@ -16,121 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- CARDVIEW CON LA INFORMACION DE CABEZERA -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_actions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="5dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_title_actions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="@string/text_title_cv_cabezera_experiment"
-                        android:textAlignment="center"
-                        android:layout_marginTop="10dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_1000_nodes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:text="@string/text_arbol_1000_nodos"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="20dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_1000_nodes_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_title_actions"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/text_no_cargado"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_10000_nodes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:text="@string/text_arbol_10000_nodos"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="20dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_10000_nodes_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_1000_nodes_state"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/text_no_cargado"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_100000_nodes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:text="@string/text_arbol_100000_nodos"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="20dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_100000_nodes_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_10000_nodes_state"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/text_no_cargado"
-                        />
-
-                    <Button
-                        android:id="@+id/bt_load_json"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_100000_nodes"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="@string/text_bt_cargar_datos"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginBottom="20dp"
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
             <!-- CARDVIEW CON LAS OPERACIONES -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_operations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/cv_actions"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -435,7 +326,7 @@
                         android:textIsSelectable="false"
                         />
 
-                    <!-- Meghan Lindsey-->
+
                     <Button
                         android:id="@+id/bt_search_bnodo"
                         android:layout_width="match_parent"
@@ -481,13 +372,24 @@
                         android:layout_marginTop="10dp"
                         />
 
+                    <Button
+                        android:id="@+id/bt_start_test"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_result"
+                        android:text="@string/text_bt_cargar_datos"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
+                        />
+
                     <com.evrencoskun.tableview.TableView
                         android:id="@+id/table"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_title_result"
+                        app:layout_constraintTop_toBottomOf="@id/bt_start_test"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="20dp"

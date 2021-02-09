@@ -87,7 +87,7 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
 
                 graph.addEdge(parent,child);
 
-                GraphAdapter adapter = new GraphAdapter(graph, new int[] {idJefe, idChild}, names);
+                GraphAdapter adapter = new GraphAdapter(graph, new int[] {idJefe, idChild}, names, null);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -115,7 +115,7 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
                     graph.addEdge(parent,new Node("child " + i));
                 }
 
-                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names, null);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -147,7 +147,7 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
                     parent = child;
                 }
 
-                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names, null);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -178,7 +178,7 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
                     graph.addEdge(parent,child);
                 }
 
-                GraphAdapter adapter = new GraphAdapter(graph, ids, names);
+                GraphAdapter adapter = new GraphAdapter(graph, ids, names, null);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
@@ -206,7 +206,7 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
 
                 graph.addNode(parent);
 
-                GraphAdapter adapter = new GraphAdapter(graph, new int[]{id},new String[]{name});
+                GraphAdapter adapter = new GraphAdapter(graph, new int[]{id},new String[]{name}, null);
                 graphView.setAdapter(adapter);
 
                 final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()

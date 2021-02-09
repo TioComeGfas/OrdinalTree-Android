@@ -161,7 +161,13 @@ public class Manager {
 
     public long getFirstChild(int loudTree, int position){
         LoudsTree loud = getTree(loudTree);
-        return loud.firstChild(position);
+        long value;
+        try{
+            value = loud.firstChild(position);
+        }catch(IndexOutOfBoundsException e){
+            value = -1;
+        }
+        return value;
     }
 
     public long getSibling(int loudTree, int position){

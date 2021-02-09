@@ -30,7 +30,7 @@
     <string name="text_no_cargado">No cargado</string>
     <string name="text_cargado">Cargado</string>
     <string name="text_generado">Generado</string>
-    <string name="text_bt_cargar_datos">Cargar información</string>
+    <string name="text_bt_cargar_datos">Realizar benchmark</string>
     <string name="text_arbol_1000_nodos">Árbol con 1.000 nodos</string>
     <string name="text_arbol_10000_nodos">Árbol con 10.000 nodos</string>
     <string name="text_arbol_100000_nodos">Árbol con 100.000 nodos</string>
