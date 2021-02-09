@@ -1,26 +1,21 @@
 package cl.tiocomegfas.ubb.loud.frontend.activities;
 
-import androidx.annotation.ColorRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
-import java.util.LinkedList;
-
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.tiocomegfas.ubb.loud.R;
-import cl.tiocomegfas.ubb.loud.backend.listeners.OnLoadDataListener;
-import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.frontend.fragments.AboutFragment;
 import cl.tiocomegfas.ubb.loud.frontend.fragments.ExperimentFragment;
 import cl.tiocomegfas.ubb.loud.frontend.fragments.HomeFragment;
@@ -71,31 +66,11 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onTabUnselected(int position) { }
-
-        @Override
-        public void onTabReselected(int position) { }
-    };
-    private final OnLoadDataListener listenerLoadData = new OnLoadDataListener() {
-        @Override
-        public void onRunning() {
-            runOnUiThread(() -> {
-
-            });
+        public void onTabUnselected(int position) {
         }
 
         @Override
-        public void onReady(LinkedList<Person> persons) {
-            runOnUiThread(() -> {
-
-            });
-        }
-
-        @Override
-        public void onError(String message) {
-            runOnUiThread(() -> {
-
-            });
+        public void onTabReselected(int position) {
         }
     };
 
@@ -104,6 +79,9 @@ public class HomeActivity extends AppCompatActivity {
     private ImplementFragment implementFragment;
     private OrganigramaFragment organigramaFragment;
     private AboutFragment aboutFragment;
+    private Fragment activeFragment;
+
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +91,35 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         configurateBottomNavigationBar();
+
+        homeFragment = new HomeFragment();
+        experimentFragment = new ExperimentFragment();
+        implementFragment = new ImplementFragment();
+        organigramaFragment = new OrganigramaFragment();
+        aboutFragment = new AboutFragment();
+
+        fragmentManager.beginTransaction().
+                add(R.id.contenedor,homeFragment, "home").
+                add(R.id.contenedor,experimentFragment, "experiment").hide(experimentFragment).
+                add(R.id.contenedor,implementFragment, "implement").hide(implementFragment).
+                add(R.id.contenedor,organigramaFragment, "organigrama").hide(organigramaFragment).
+                add(R.id.contenedor,aboutFragment,"about").hide(aboutFragment).
+                commit();
+
+        activeFragment = homeFragment;
         showHomeFragment();
     }
 
     public void showHomeFragment(){
         if(homeFragment == null) homeFragment = new HomeFragment();
+
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),homeFragment).commit();
+                hide(activeFragment).
+                show(homeFragment).
+                commit();
+
+        activeFragment = homeFragment;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Inicio");
@@ -134,9 +133,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showImplementationFragment(){
         if(implementFragment == null) implementFragment = new ImplementFragment();
+
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),implementFragment).commit();
+                hide(activeFragment).
+                show(implementFragment)
+                .commit();
+
+        activeFragment = implementFragment;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Implementación");
@@ -150,9 +154,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showOrganigramaFragment(){
         if(organigramaFragment == null) organigramaFragment = new OrganigramaFragment();
+
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),organigramaFragment).commit();
+                hide(activeFragment).
+                show(organigramaFragment)
+                .commit();
+
+        activeFragment = organigramaFragment;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Organigrama");
@@ -166,9 +175,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showExperimentFragment(){
         if(experimentFragment == null) experimentFragment = new ExperimentFragment();
+
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),experimentFragment).commit();
+                hide(activeFragment).
+                show(experimentFragment)
+                .commit();
+
+        activeFragment = experimentFragment;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Experimentación");
@@ -182,9 +196,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showAboutFragment(){
         if(aboutFragment == null) aboutFragment = new AboutFragment();
+
         getSupportFragmentManager().
                 beginTransaction().
-                replace(frameLayout.getId(),aboutFragment).commit();
+                hide(activeFragment).
+                show(aboutFragment)
+                .commit();
+
+        activeFragment = aboutFragment;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("Acerca de");

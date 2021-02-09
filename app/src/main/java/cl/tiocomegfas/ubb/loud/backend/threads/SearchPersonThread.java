@@ -1,6 +1,9 @@
 package cl.tiocomegfas.ubb.loud.backend.threads;
 
+import android.net.MacAddress;
+
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnSearchPersonListener;
+import cl.tiocomegfas.ubb.loud.controller.Manager;
 
 public class SearchPersonThread implements Runnable {
 
@@ -9,6 +12,7 @@ public class SearchPersonThread implements Runnable {
     private OnSearchPersonListener listener;
     private String[] persons;
     private String personSearch;
+    private int treeSelect;
 
     public static SearchPersonThread getInstance(){
         return INSTANCE;
@@ -18,6 +22,7 @@ public class SearchPersonThread implements Runnable {
     public void run() {
         listener.onRunning();
 
+        Manager.getInstance().startChronometer(treeSelect);
         int find = -1;
         int size = persons.length;
         for(int i = 0; i < size; i++){
@@ -27,12 +32,14 @@ public class SearchPersonThread implements Runnable {
             }
         }
 
+        double time = Manager.getInstance().stopChronometer(treeSelect);
+
         if(find == -1){
             listener.onError("No encontrado");
             return;
         }
 
-        listener.onReady(find);
+        listener.onReady(find,personSearch, time);
     }
 
     public SearchPersonThread setListener(OnSearchPersonListener listener) {
@@ -42,6 +49,11 @@ public class SearchPersonThread implements Runnable {
 
     public SearchPersonThread setPersons(String[] persons) {
         this.persons = persons;
+        return this;
+    }
+
+    public SearchPersonThread setTreeSelect(int treeSelect) {
+        this.treeSelect = treeSelect;
         return this;
     }
 

@@ -195,6 +195,33 @@ public class RequestOperationBottomFragment extends BottomSheetDialogFragment {
 
                 break;
             }
+            case "SEARCH":{
+                int id = bundle.getInt("ID");
+                String name = bundle.getString("NAME");
+                double time = bundle.getDouble("TIME");
+
+                graph = new Graph();
+
+                Node parent = new Node("root");
+
+                graph.addNode(parent);
+
+                GraphAdapter adapter = new GraphAdapter(graph, new int[]{id},new String[]{name});
+                graphView.setAdapter(adapter);
+
+                final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
+                        .setSiblingSeparation(50)
+                        .setLevelSeparation(50)
+                        .setSubtreeSeparation(100)
+                        .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
+                        .build();
+                graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+
+                DecimalFormat df = new DecimalFormat("0.000000");
+                String tiempo = "Tiempo de operación: " + df.format(time) + " segundos";
+                tvTime.setText(tiempo);
+                break;
+            }
             default:
                 break;
         }

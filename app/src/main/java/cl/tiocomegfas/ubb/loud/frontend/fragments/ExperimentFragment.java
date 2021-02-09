@@ -10,7 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.evrencoskun.tableview.TableView;
+import com.evrencoskun.tableview.filter.Filter;
 
 import java.util.LinkedList;
 
@@ -39,7 +44,13 @@ import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnSearchPersonListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnTableViewGenerateDataListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
+import cl.tiocomegfas.ubb.loud.backend.tableutil.TableViewAdapter;
+import cl.tiocomegfas.ubb.loud.backend.tableutil.TableViewListener;
+import cl.tiocomegfas.ubb.loud.backend.tableutil.TableViewModel;
+import cl.tiocomegfas.ubb.loud.backend.tableutil.model.Cell;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
 import cl.tiocomegfas.ubb.loud.controller.Pipe;
 import cl.tiocomegfas.ubb.loud.frontend.activities.HomeActivity;
@@ -80,11 +91,20 @@ public class ExperimentFragment extends Fragment {
     @BindView(R.id.et_colegas)
     EditText etColegas;
 
+    @BindView(R.id.rb_tree_1)
+    RadioButton rb1;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.table)
+    TableView tableView;
+
     private Context context;
     private HomeActivity activity;
     private Unbinder unbinder;
+    private AlertDialog dialog;
     private int treeSelect;
     private boolean isLoadJson;
+    private final double[][] data = new double[TableViewModel.ROW_SIZE][TableViewModel.COLUMN_SIZE]; //crear datos ficticios
 
     private final OnBuildLoudTreeListener listenerBuildLoudTree = new OnBuildLoudTreeListener() {
         @Override
@@ -149,6 +169,8 @@ public class ExperimentFragment extends Fragment {
                 }
                 DialogTop.show(activity,"Información generada correctamente!!", DialogTop.SUCCESS);
                 isLoadJson = true;
+
+                Pipe.getInstance().callTableViewGenerateData(listenerGenerateDataListener);
             });
         }
 
@@ -256,6 +278,84 @@ public class ExperimentFragment extends Fragment {
 
         }
     };
+    private final OnTableViewGenerateDataListener listenerGenerateDataListener = new OnTableViewGenerateDataListener() {
+        @Override
+        public void onTimeFirstChild(double timeTree1, double timeTree2, double timeTree3) {
+            activity.runOnUiThread(() -> {
+                data[0][0] = timeTree1;
+                data[0][1] = timeTree2;
+                data[0][2] = timeTree3;
+            });
+        }
+
+        @Override
+        public void onTimeNextSibling(double timeTree1, double timeTree2, double timeTree3) {
+            activity.runOnUiThread(() -> {
+                data[1][0] = timeTree1;
+                data[1][1] = timeTree2;
+                data[1][2] = timeTree3;
+            });
+        }
+
+        @Override
+        public void onTimeParent(double timeTree1, double timeTree2, double timeTree3) {
+            activity.runOnUiThread(() -> {
+                data[2][0] = timeTree1;
+                data[2][1] = timeTree2;
+                data[2][2] = timeTree3;
+            });
+        }
+
+        @Override
+        public void onTimeData(double timeTree1, double timeTree2, double timeTree3) {
+            activity.runOnUiThread(() -> {
+                data[3][0] = timeTree1;
+                data[3][1] = timeTree2;
+                data[3][2] = timeTree3;
+            });
+        }
+
+        @Override
+        public void onReady() {
+            activity.runOnUiThread(() -> {
+                dialog.cancel();
+                initTable();
+            });
+        }
+
+        @Override
+        public void onRunning() {
+            activity.runOnUiThread(() -> {
+                //informa al usuario que se estan realizando pruebas de rendimiento
+
+                dialog = LoadingDialog.show(context,"Prueba de rendimiento...");
+                dialog.show();
+            });
+        }
+    };
+    private final OnSearchPersonListener listenerSearchPerson = new OnSearchPersonListener() {
+        @Override
+        public void onRunning() {
+
+        }
+
+        @Override
+        public void onReady(int position, String name, double time) {
+            activity.runOnUiThread(() -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("MODE","SEARCH");
+                bundle.putInt("ID", position);
+                bundle.putString("NAME", name);
+                bundle.putDouble("TIME",time);
+                showBottomSheetFragment(bundle);
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+    };
 
     public ExperimentFragment() { }
 
@@ -278,6 +378,7 @@ public class ExperimentFragment extends Fragment {
 
         this.treeSelect = -1;
         this.isLoadJson = false;
+        rb1.setChecked(true);
     }
 
     @Override
@@ -340,10 +441,19 @@ public class ExperimentFragment extends Fragment {
             DialogTop.show(activity,"Recuerde ingresar el número del nodo",DialogTop.PRECAUTION);
             return;
         }
-        int indexNodo = Parser.toInteger(etBuscarNodo.getText().toString());
+        String nameStr = etBuscarNodo.getText().toString();
 
-        if(!checkValues(indexNodo)) return;
-        //String request = Manager.getInstance().searchNodo(treeSelect,indexNodo);
+        if(!nameStr.contains(" ")){
+            DialogTop.show(activity,"Antes de continuar, ingrese el apellido",DialogTop.PRECAUTION);
+            return;
+        }
+
+        if(nameStr.split(" ").length != 2) {
+            DialogTop.show(activity,"Debe ingresar el nombre y el apellido",DialogTop.PRECAUTION);
+            return;
+        }
+
+        Manager.getInstance().searchNodo(treeSelect,nameStr,listenerSearchPerson);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -390,6 +500,19 @@ public class ExperimentFragment extends Fragment {
         if(checked) treeSelect = Manager.LOUD_TREE_3;
     }
 
+    private void initTable(){
+        // Create TableView View model class  to group view models of TableView
+        TableViewModel tableViewModel = new TableViewModel();
+
+        // Create TableView Adapter
+        TableViewAdapter tableViewAdapter = new TableViewAdapter(tableViewModel);
+
+        tableView.setAdapter(tableViewAdapter);
+        tableView.setTableViewListener(new TableViewListener(tableView));
+
+        tableViewAdapter.setAllItems(tableViewModel.getColumnHeaderList(), tableViewModel.getRowHeaderList(), tableViewModel.getCellList(data));
+    }
+
     private boolean checkValues(int indexNodo){
         if(!isLoadJson) {
             DialogTop.show(activity,"Antes de continuar, genere los arboles",DialogTop.PRECAUTION);
@@ -433,4 +556,5 @@ public class ExperimentFragment extends Fragment {
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
         fragment.show(activity.getSupportFragmentManager(),"RequestOperationBottomFragment");
     }
+
 }

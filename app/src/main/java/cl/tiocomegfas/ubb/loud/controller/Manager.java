@@ -10,6 +10,7 @@ import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryCadenaMandoListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnSearchPersonListener;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 
 public class Manager {
@@ -216,8 +217,15 @@ public class Manager {
      * @param loudTree
      * @return
      */
-    public int searchNodo(int loudTree, String name, String lastname){
-        return 0;
+    public void searchNodo(int loudTree, String nameStr, OnSearchPersonListener listener){
+        LinkedList<Person> persons = getPersons(loudTree);
+        String[] names = new String[persons.size()];
+
+        for(int i = 0; i < persons.size(); i++){
+            names[i] = persons.get(i).toString();
+        }
+
+        Pipe.getInstance().callSearchPerson(loudTree, names,nameStr,listener);
     }
 
     /**

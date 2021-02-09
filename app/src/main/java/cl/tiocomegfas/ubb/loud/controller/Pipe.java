@@ -10,6 +10,7 @@ import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryColegasListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQueryJefeListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnQuerySubordinadosListener;
 import cl.tiocomegfas.ubb.loud.backend.listeners.OnSearchPersonListener;
+import cl.tiocomegfas.ubb.loud.backend.listeners.OnTableViewGenerateDataListener;
 import cl.tiocomegfas.ubb.loud.backend.threads.BuildLoudTreeThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.LoadDataThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.QueryCadenaMandoThread;
@@ -17,6 +18,7 @@ import cl.tiocomegfas.ubb.loud.backend.threads.QueryColegasThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.QueryJefeThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.QuerySubordinadosThread;
 import cl.tiocomegfas.ubb.loud.backend.threads.SearchPersonThread;
+import cl.tiocomegfas.ubb.loud.backend.threads.TableViewGenerateDataThread;
 
 public class Pipe {
 
@@ -28,6 +30,7 @@ public class Pipe {
     private QueryCadenaMandoThread queryCadenaMandoThread;
     private QueryColegasThread queryColegasThread;
     private QuerySubordinadosThread querySubordinadosThread;
+    private TableViewGenerateDataThread generateDataThread;
 
     private Pipe(){ }
 
@@ -50,13 +53,14 @@ public class Pipe {
                 start();
     }
 
-    public void callSearchPerson( String[] persons, String personSearch, OnSearchPersonListener listener){
+    public void callSearchPerson(int loudTree, String[] persons, String personSearch, OnSearchPersonListener listener){
         if(persons == null || persons.length == 0) throw new IllegalArgumentException("persons is invalid or empty");
         if(TextUtils.isEmpty(personSearch)) throw new IllegalArgumentException("personSearch is invalid");
         if(listener == null) throw new IllegalArgumentException("El listener es invalido");
 
         searchPersonThread = SearchPersonThread.getInstance();
         searchPersonThread.
+                setTreeSelect(loudTree).
                 setPersons(persons).
                 setPersonSearch(personSearch).
                 setListener(listener).
@@ -110,6 +114,15 @@ public class Pipe {
                 setListener(listener).
                 start();
     }
+
+    public void callTableViewGenerateData(OnTableViewGenerateDataListener listener){
+        generateDataThread = TableViewGenerateDataThread.getInstance();
+        generateDataThread.
+                setListener(listener).
+                start();
+    }
+
+
 
     public void cancelLoadJson(){
         if(loadDataThread == null) throw new IllegalStateException("loadDataThread is invalid");
