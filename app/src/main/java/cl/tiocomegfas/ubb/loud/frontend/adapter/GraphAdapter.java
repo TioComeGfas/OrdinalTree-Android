@@ -96,10 +96,12 @@ public class GraphAdapter extends de.blox.graphview.GraphAdapter<GraphView.ViewH
             tvName.setText(nameLastname);
             tvNumber.setText(String.valueOf(number));
 
-            if(listener == null) return;
-            tvName.setOnClickListener(v -> click(number,listener));
-            tvNumber.setOnClickListener(v -> click(number,listener));
-            getItemView().setOnClickListener(v -> click(number,listener));
+            if(number > 0){
+                if(listener == null) return;
+                tvName.setOnClickListener(v -> click(number,listener));
+                tvNumber.setOnClickListener(v -> click(number,listener));
+                getItemView().setOnClickListener(v -> click(number,listener));
+            }
         }
 
         private void click(int number,OnGraphAdapterListener listener){

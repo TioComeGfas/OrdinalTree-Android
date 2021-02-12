@@ -10,7 +10,21 @@
     <com.otaliastudios.zoom.ZoomLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:hasClickableChildren="true">
+        app:hasClickableChildren="true"
+        app:alignment="center"
+        app:overScrollHorizontal="true"
+        app:overScrollVertical="true"
+        app:overPinchable="true"
+        app:horizontalPanEnabled="true"
+        app:verticalPanEnabled="true"
+        app:zoomEnabled="true"
+        app:flingEnabled="true"
+        app:scrollEnabled="true"
+        app:oneFingerScrollEnabled="true"
+        app:minZoom="0.1"
+        app:minZoomType="zoom"
+        app:maxZoom="100.0"
+        app:maxZoomType="zoom" >
 
         <de.blox.graphview.GraphView
             android:id="@+id/graph"

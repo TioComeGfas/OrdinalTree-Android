@@ -25,7 +25,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.Holder> {
     private final OnFilesAdapterListener listener;
     private final String[] files;
 
-    public FilesAdapter(String[] files, OnFilesAdapterListener listener){
+    public FilesAdapter(final String[] files, OnFilesAdapterListener listener){
         this.files = files;
         this.listener = listener;
     }
@@ -73,6 +73,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.Holder> {
         @BindDrawable(R.drawable.ic_file_dat)
         Drawable fileDat;
 
+        @SuppressLint("NonConstantResourceId")
+        @BindDrawable(R.drawable.ic_file_java)
+        Drawable fileJava;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -87,6 +91,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.Holder> {
                 ivIcon.setImageDrawable(fileCpp);
             }else if(value.contains(".h")){
                 ivIcon.setImageDrawable(fileH);
+            }else if(value.contains(".java")){
+                ivIcon.setImageDrawable(fileJava);
             }else {
                 //un icono por defecto en caso
                 // de no ser de tipo .h o .cpp
@@ -94,7 +100,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.Holder> {
             }
         }
 
-        @OnClick({R.id.iv_icon_file, R.id.tv_name_file, R.id.cv_adapter_files})
+        @OnClick({R.id.iv_icon_file, R.id.tv_name_file})
         void onClick(){
             listener.onClick(getAdapterPosition());
         }

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cl.tiocomegfas.ubb.loud.R;
+import cl.tiocomegfas.ubb.loud.backend.constants.Codes;
+import cl.tiocomegfas.ubb.loud.frontend.activities.HomeActivity;
 import cl.tiocomegfas.ubb.loud.frontend.adapter.FilesAdapter;
 import cl.tiocomegfas.ubb.loud.frontend.listeners.OnFilesAdapterListener;
 
@@ -27,24 +31,32 @@ public class ArchivosBottomFragment extends BottomSheetDialogFragment {
     @BindView(R.id.rv_archivos)
     RecyclerView rvArchivos;
 
+    private HomeActivity activity;
     private Context context;
     private Unbinder unbinder;
-    private final String[] filesArray = {
-            "BitArray.h",
-            "BitArray.cpp",
-            "RankSelect.h",
-            "RankSelect.cpp",
-            "IndexOutOfBoundsException.h",
-            "OrdinalTree.h",
-            "OrdinalTree.cpp",
-            "loud-lib.cpp",
-            "Cronometer.h",
-            "Cronometer.cpp",
-            "Cronometer-lib.cpp"
-    };
+    private final String[] files = new String[]{ "BitArray.java", "RankSelect.java", "LoudsTree.java", "Chronometer.cpp", "Chronometer.h"};
 
     private final OnFilesAdapterListener listener = position -> {
-        //retorna la posicion que el usuario seleccion de la lista
+        switch (position){
+            case 0:{
+                activity.setCode(Codes.codeBitArray, "Java");
+                break;
+            } case 1:{
+                activity.setCode(Codes.codeRankSelect,"Java");
+                break;
+            } case 2:{
+                activity.setCode(Codes.codeLoudsTree,"Java");
+                break;
+            } case 3:{
+                activity.setCode(Codes.codeChronometerCpp, "C++");
+                break;
+            } case 4:{
+                activity.setCode(Codes.codeChronometerH, "C++");
+                break;
+            } default:{
+                break;
+            }
+        }
     };
 
     public ArchivosBottomFragment() {
@@ -61,11 +73,15 @@ public class ArchivosBottomFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.context = getContext();
+        this.activity = (HomeActivity) getActivity();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        rvArchivos.setLayoutManager(linearLayoutManager);
+        //new GridLayoutManager(this, numberOfColumns)
 
-        FilesAdapter filesAdapter = new FilesAdapter(filesArray,listener);
+        GridLayoutManager layoutManager = new GridLayoutManager(context,3);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rvArchivos.setLayoutManager(layoutManager);
+
+        FilesAdapter filesAdapter = new FilesAdapter(files, listener);
         rvArchivos.setAdapter(filesAdapter);
 
         rvArchivos.invalidate();

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_more"
+        android:icon="@drawable/ic_menu"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+
+            <item
+                android:id="@+id/bitarray"
+                android:icon="@drawable/ic_file_java"
+                android:title="BitArray"
+                app:showAsAction="ifRoom"
+                />
+
+            <item
+                android:id="@+id/rankselect"
+                android:icon="@drawable/ic_file_java"
+                android:title="RankSelect"
+                app:showAsAction="ifRoom"
+                />
+
+            <item
+                android:id="@+id/loudstree"
+                android:icon="@drawable/ic_file_java"
+                android:title="LoudsTree"
+                app:showAsAction="ifRoom"
+                />
+
+            <item
+                android:id="@+id/chronometer_cpp"
+                android:icon="@drawable/ic_file_cpp"
+                android:title="Chronometer"
+                app:showAsAction="ifRoom"
+                />
+
+            <item
+                android:id="@+id/chronometer_h"
+                android:icon="@drawable/ic_file_h"
+                android:title="Chronometer"
+                app:showAsAction="ifRoom"
+                />
+
+
+        </menu>
+
+    </item>
+
+</menu>

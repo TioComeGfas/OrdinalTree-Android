@@ -25,6 +25,7 @@ import cl.tiocomegfas.ubb.loud.R;
 import cl.tiocomegfas.ubb.loud.backend.constants.Sex;
 import cl.tiocomegfas.ubb.loud.backend.model.Person;
 import cl.tiocomegfas.ubb.loud.controller.Manager;
+import cl.tiocomegfas.ubb.loud.frontend.activities.HomeActivity;
 import cl.tiocomegfas.ubb.loud.frontend.adapter.GraphAdapter;
 import cl.tiocomegfas.ubb.loud.frontend.listeners.OnGraphAdapterListener;
 import de.blox.graphview.Graph;
@@ -39,11 +40,21 @@ public class OrganigramaFragment extends Fragment {
     @BindView(R.id.graph)
     GraphView graphView;
 
+    private HomeActivity activity;
     private Unbinder unbinder;
     private Graph graph;
-    private int loudTree = Manager.LOUD_TREE_1;
+    private final BuchheimWalkerAlgorithm algorithm = new BuchheimWalkerAlgorithm(new BuchheimWalkerConfiguration.Builder()
+            .setSiblingSeparation(50)
+            .setLevelSeparation(50)
+            .setSubtreeSeparation(100)
+            .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
+            .build());
+    private int loudTree;
+    private LinkedList<Integer> childLoads;
 
-    private final OnGraphAdapterListener listenerGraph = (id,x,y) -> getActivity().runOnUiThread(() -> {
+    private final OnGraphAdapterListener listenerGraph = (id,x,y) -> activity.runOnUiThread(() -> {
+        if(!checkChildCreate(id)) return;
+
         int fChild = (int)Manager.getInstance().getFirstChild(loudTree,id);
         if(fChild == -1){
             DialogTop.show(getActivity(),"No tiene mas hijos",DialogTop.INFORMATION);
@@ -66,26 +77,10 @@ public class OrganigramaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        graph = new Graph();
+        this.activity = (HomeActivity) getActivity();
 
-        final Node node1 = new Node("false root");
-        final Node node2 = new Node("root");
-
-        int[] ids = new int[] {0,2};
-        String[] names = new String[]{Manager.getInstance().getPersonString(loudTree,0), Manager.getInstance().getPersonString(loudTree,2)};
-
-        graph.addEdge(node1, node2);
-
-        GraphAdapter adapter = new GraphAdapter(graph,ids,names, listenerGraph);
-        graphView.setAdapter(adapter);
-
-        final BuchheimWalkerConfiguration configuration = new BuchheimWalkerConfiguration.Builder()
-                .setSiblingSeparation(50)
-                .setLevelSeparation(50)
-                .setSubtreeSeparation(100)
-                .setOrientation(BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM)
-                .build();
-        graphView.setLayout(new BuchheimWalkerAlgorithm(configuration));
+        loudTree = Manager.LOUD_TREE_1;
+        createGraph();
     }
 
     private void updateGraph(int fChild, int lChild, float _x, float _y){
@@ -112,8 +107,6 @@ public class OrganigramaFragment extends Fragment {
 
                 ((GraphAdapter) graphView.getAdapter()).updateData(ids,names);
                 ((GraphAdapter) graphView.getAdapter()).notifyDataSetChanged();
-
-                //actualizar la informacion del adaptador
                 return;
             }
         }
@@ -123,5 +116,45 @@ public class OrganigramaFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public void setTree(int loudTree) {
+        if(this.loudTree == loudTree){
+            DialogTop.show(activity,"Ya se encuentra visualizando este árbol", DialogTop.ERROR);
+            return;
+        }
+
+        this.loudTree = loudTree;
+        createGraph();
+    }
+
+    private boolean checkChildCreate(int position){
+        for(Integer value: childLoads){
+            if(value == position){
+                DialogTop.show(activity,"Ya se encuentran sus hijos visualizados", DialogTop.ERROR);
+                return false;
+            }
+        }
+
+        childLoads.add(position);
+        return true;
+    }
+
+    public void createGraph(){
+        graph = new Graph();
+        childLoads = new LinkedList<>();
+
+        final Node node1 = new Node("false root");
+        final Node node2 = new Node("root");
+
+        int[] ids = new int[] {0,2};
+        String[] names = new String[]{Manager.getInstance().getPersonString(loudTree,0), Manager.getInstance().getPersonString(loudTree,2)};
+        graph.addEdge(node1, node2);
+
+        GraphAdapter adapter = new GraphAdapter(graph,ids,names, listenerGraph);
+        graphView.setAdapter(adapter);
+        graphView.setLayout(algorithm);
+
+        childLoads.add(0);
     }
 }

@@ -16,31 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_cv_archivos"
+            <io.github.kbiakov.codeview.CodeView
+                android:id="@+id/code_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/title_cv_implement_fragment"
                 />
-
-            <RadioGroup
-                android:id="@+id/rg_archivos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_cv_archivos"
-                app:layout_constraintStart_toStartOf="parent" >
-
-
-
-                <RadioButton
-                    android:id="@+id/rb_bitarray_cpp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rb_bitarray_cpp"/>
-
-
-            </RadioGroup>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -51,18 +32,5 @@
 
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-
-    </ScrollView>
-
-    <io.github.kbiakov.codeview.CodeView
-        android:id="@+id/code_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

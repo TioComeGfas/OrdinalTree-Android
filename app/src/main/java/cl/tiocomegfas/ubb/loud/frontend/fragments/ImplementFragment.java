@@ -15,7 +15,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cl.tiocomegfas.ubb.loud.R;
+import cl.tiocomegfas.ubb.loud.backend.constants.Codes;
 import io.github.kbiakov.codeview.CodeView;
+import io.github.kbiakov.codeview.adapters.Options;
+import io.github.kbiakov.codeview.highlight.ColorTheme;
+import io.github.kbiakov.codeview.highlight.Font;
 
 public class ImplementFragment extends Fragment {
 
@@ -38,7 +42,11 @@ public class ImplementFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        codeView.setCode(getString(R.string.code_c_bitarray_h),"C++");
+        codeView.setOptions(Options.Default.get(getActivity())
+               .withLanguage("Java")
+                .withCode(Codes.codeBitArray)
+                .withTheme(ColorTheme.MONOKAI)
+                .withFont(Font.Consolas));
     }
 
     @Override
@@ -47,4 +55,11 @@ public class ImplementFragment extends Fragment {
         unbinder.unbind();
     }
 
+    public void setCode(String code, String lenguaje) {
+        codeView.setOptions(Options.Default.get(getActivity())
+                .withLanguage(lenguaje)
+                .withCode(code)
+                .withTheme(ColorTheme.MONOKAI)
+                .withFont(Font.Consolas));
+    }
 }
