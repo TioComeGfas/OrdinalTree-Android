@@ -34,32 +34,6 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*
-        Element adsElement = new Element();
-        adsElement.setTitle("Acerca de esta APP");
-
-        View aboutPage = new AboutPage(this)
-                .isRTL(false)
-                .enableDarkMode(false)
-                .setImage(R.drawable.dummy_image)
-                .addItem(new Element().setTitle("Version 6.2"))
-                .addItem(adsElement)
-                .addGroup("Connect with us")
-                .addEmail("elmehdi.sakout@gmail.com")
-                .addWebsite("https://mehdisakout.com/")
-                .addFacebook("the.medy")
-                .addTwitter("medyo80")
-                .addYoutube("UCdPQtdWIsg7_pi4mrRu46vA")
-                .addPlayStore("com.ideashower.readitlater.pro")
-                .addInstagram("medyo80")
-                .addGitHub("medyo")
-                .addItem(getCopyRightsElement())
-                .create();
-
-        setContentView(aboutPage);
-
-         */
     }
 
     @Override
