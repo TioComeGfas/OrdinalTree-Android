@@ -8,7 +8,7 @@
     <string name="accion_3_fragment_home">* Obtener la cadena de mando de un trabajador</string>
     <string name="accion_4_fragment_home">* Obtener los colegas de un trabajador</string>
     <string name="accion_5_fragment_home">* Obtener información de un trabajador</string>
-    <string name="accion_6_fragment_home">* Obtener la información de un trabajador</string>
+    <string name="accion_6_fragment_home">* Visualizar el organigrama de la empresa</string>
 
     <string name="history_fragment_home">
         Coca-Cola, conocida comúnmente como Coca en muchos países hispanohablantes (en inglés Coke),
